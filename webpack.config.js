@@ -2,37 +2,35 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   resolve: {
-    modules: ['src', 'node_modules']
+    modules: ['src', 'node_modules'],
   },
   devtool: 'source-map',
   entry: {
     vendor: ['react', 'react-dom'],
-    client: './src/index.js'
+    client: './src/index.js',
   },
   output: {
-    path: __dirname + '/dist',
+    path: `${__dirname}/dist`,
     filename: '[name].chunkhash.bundle.js',
     chunkFilename: '[name].chunkhash.bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /\.(css)$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
   },
   devServer: {
     historyApiFallback: true,
-    port: 8080
+    port: 8080,
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -47,8 +45,8 @@ module.exports = {
         minifyURLs: true,
         minifyJS: true,
         removeComments: true,
-        removeRedundantAttributes: true
-      }
-    })
-  ]
+        removeRedundantAttributes: true,
+      },
+    }),
+  ],
 };
