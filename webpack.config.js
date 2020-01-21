@@ -29,43 +29,6 @@ module.exports = {
         test: /\.(css)$/,
         use: ['style-loader', 'css-loader'],
       },
-      {
-        test: /\.(html)$/,
-        use: {
-          loader: 'html-loader',
-        },
-      },
-      {
-        test: /\.csv$/,
-        loader: 'csv-loader',
-        options: {
-          dynamicTyping: true,
-          header: true,
-          skipEmptyLines: true,
-        },
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-          {
-            loader: 'react-svg-loader',
-            options: {
-              jsx: true, // true outputs JSX tags
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
-      },
     ],
   },
   devServer: {
