@@ -1,5 +1,4 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const copyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   resolve: {
@@ -21,9 +20,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /\.(css)$/,
@@ -36,7 +33,6 @@ module.exports = {
     port: 8080,
   },
   plugins: [
-    new copyWebpackPlugin([{ from: './_redirects' }]),
     new HtmlWebpackPlugin({
       title: 'Bridged',
       template: './src/index.html',
