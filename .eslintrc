@@ -7,7 +7,8 @@
     "global-require": 1,
     "import/no-unresolved": "off",
     "react/prop-types": "off",
-    "react/forbid-prop-types": "off"
+    "react/forbid-prop-types": "off",
+    "react/prefer-stateless-function": [0, { "ignorePureComponents": true }]
   },
   "parser": "babel-eslint",
   "env": {
