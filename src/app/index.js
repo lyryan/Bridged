@@ -7,7 +7,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import About from './pages/About.js';
+import About from './pages/About';
 import Campaigns from './pages/Campaigns'
 import Home from './pages/Home'
 
