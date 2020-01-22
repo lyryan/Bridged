@@ -1,12 +1,13 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const DotenvPlugin = require('webpack-dotenv-plugin');
 
-module.exports = {
+const webpackConfig = {
   resolve: {
     modules: ['src', 'node_modules'],
   },
   devtool: 'source-map',
   entry: {
-    vendor: ['react', 'react-dom'],
+    vendor: ['@babel/polyfill', 'react', 'react-dom'],
     client: './src/index.js',
   },
   output: {
@@ -50,3 +51,14 @@ module.exports = {
     }),
   ],
 };
+
+if (process.env.NODE_ENV !== 'production') {
+  webpackConfig.plugins.push(
+    new DotenvPlugin({
+      sample: './.env.development.example',
+      path: './.env.development',
+    }),
+  );
+}
+
+module.exports = webpackConfig;
