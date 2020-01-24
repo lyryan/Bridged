@@ -12,25 +12,27 @@ import About from '../pages/About';
 import Campaigns from '../pages/Campaigns';
 import Home from '../pages/Home';
 
-// const fm = new Fortmatic(process.env.FORTMATIC_KEY)
+const customNodeOptions = {
+  rpcUrl: 'http://127.0.0.1:7545', // your own node url
+  chainId: 5777 // chainId of your own node
+}
+
+const fm = new Fortmatic(process.env.FORTMATIC_KEY, customNodeOptions)
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoggedIn: false,
-      accounts: [],
+      account: '',
       email: '',
+      balance: ''
     };
   }
 
   componentDidMount = async () => {
     
-    window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545")) 
-    this.getUserData()
-
-    // replace the following lines to use fortmatic
-    /*
+    console.log(fm.getProvider())
     window.web3 = new Web3(fm.getProvider());
 
     const isUserLoggedIn = await fm.user.isLoggedIn();
@@ -40,7 +42,7 @@ class App extends React.Component {
     this.setState({
       isLoggedIn: isUserLoggedIn,
     });
-    */
+    
 
   };
 
@@ -99,22 +101,18 @@ class App extends React.Component {
     ]
     const address = '0x65Ed94f41C3368c4Cf6a3F690c123d50bEeDA908'
 
-    // Create contract object
-    const tokenContract = await web3.eth.contract(ABI);
-    // Instantiate contract
-    const tokenContractInstance = await tokenContract.at(address);
+    const addition_contract = new window.web3.eth.Contract(ABI, address)
     
-    console.log('this is the account', this.state.account)
-    await tokenContractInstance.add(1, 2, { from: this.state.accounts[0] }) // use first account by default
+    addition_contract.methods.add(1, 9).send({from: this.state.account}, async (data) => { // use send() whenever you're writing too blockchain
+        let result = await addition_contract.methods.sum().call() // use call() whenever you're reading from blockchain
+        console.log('this is the result', result)
+      }) 
+
     
-        // Call contract function (non-state altering) to get total token supply
-    tokenContractInstance.getSum.call(function(error, result) {
-      if (error) throw error;
-      console.log(result);
-    });
+
   }
 
-  /*login = async () => {
+  login = async () => {
     await fm.user
       .login()
       .then(account => {
@@ -128,27 +126,25 @@ class App extends React.Component {
 
   logout = async () => {
     await fm.user.logout().then(() => {
-      this.setState({ isLoggedIn: false, account: '', email: '' });
+      this.setState({ isLoggedIn: false, account: '', email: '', balance: '' });
     });
-  };*/
+  };
 
   getUserData = async () => {
-    web3.eth.getAccounts((err, accounts) => {
-      if (err != null) console.error("An error occurred: "+err);
-      else this.setState({isLoggedIn: true, accounts}, () => console.log(this.state))
-    });
 
-    /*const userData = await fm.user.getUser();
-
-    window.web3.eth.getAccounts((err, accounts) => {
+  const userData = await fm.user.getUser();
+  window.web3.eth.getAccounts((err, accounts) => {
+    window.web3.eth.getBalance(accounts[0], (err, wei) => {
+      let balance = wei/1000000000000000000 // convert wei to ether
       this.setState({
         account: accounts[0],
         email: userData.email,
+        balance
       }).catch(() => {
         console.log('Error retrieving user data', err);
       });
-    });*/
-
+    })
+  });
   };
 
   render() {
@@ -167,25 +163,6 @@ class App extends React.Component {
         <Router>
           <div>
             <div>
-              {/*<button
-                type="submit"
-                onClick={() => {
-                  this.login();
-                }}
-              >
-                Log In
-              </button>
-              <Link to="/">
-                <button
-                  type="submit"
-                  onClick={() => {
-                    this.logout();
-                  }}
-                >
-                  Log Out
-                </button>
-                </Link>*/}
-
               <div
                 style={{
                   display: 'flex',
@@ -193,10 +170,12 @@ class App extends React.Component {
                 }}
               >
                 {`isLoggedIn: ${isLoggedIn}`}
-              <div>{this.state.accounts.map((val, index) => <p key = {index}>Public address: {val} </p>)}</div>
+              <div>{this.state.account}</div>
+              <div>Balance: {this.state.balance}</div>
                 <div>Email: {email}</div>
-                <button onClick ={() => this.executeSmartContract()}>Do Math</button>
               </div>
+              <button onClick ={() => this.executeSmartContract()}>Do Math</button>
+
             </div>
             <Switch>
               <Route path="/about">
