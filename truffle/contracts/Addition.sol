@@ -1,7 +1,7 @@
 pragma solidity >=0.4.21 <0.7.0;
 
 contract Addition {
-  int public sum = 5;
+  int public sum = 0;
   
   function getSum() public view returns(int){
     return sum;

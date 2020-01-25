@@ -19,6 +19,62 @@ const customNodeOptions = {
 
 const fm = new Fortmatic(process.env.FORTMATIC_KEY, customNodeOptions)
 
+// abi for the addition smart contract
+const addition_ABI = [
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "int256",
+        "name": "x",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256",
+        "name": "y",
+        "type": "int256"
+      }
+    ],
+    "name": "add",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getSum",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "sum",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
+// address of the addition smart contract
+const addition_address = '0x65Ed94f41C3368c4Cf6a3F690c123d50bEeDA908'
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +82,11 @@ class App extends React.Component {
       isLoggedIn: false,
       account: '',
       email: '',
-      balance: ''
+      balance: '',
+
+      inputOne: '',
+      inputTwo: '',
+      result: null
     };
   }
 
@@ -46,70 +106,20 @@ class App extends React.Component {
 
   };
 
-  executeSmartContract = async () => {
-    const ABI = [
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "int256",
-            "name": "x",
-            "type": "int256"
-          },
-          {
-            "internalType": "int256",
-            "name": "y",
-            "type": "int256"
-          }
-        ],
-        "name": "add",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "getSum",
-        "outputs": [
-          {
-            "internalType": "int256",
-            "name": "",
-            "type": "int256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sum",
-        "outputs": [
-          {
-            "internalType": "int256",
-            "name": "",
-            "type": "int256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ]
-    const address = '0x65Ed94f41C3368c4Cf6a3F690c123d50bEeDA908'
+  addNumbersOnBlockchain = async () => {
 
-    const addition_contract = new window.web3.eth.Contract(ABI, address)
+    const addition_contract = new window.web3.eth.Contract(addition_ABI, addition_address)
+
+    await addition_contract.methods.add(this.state.inputOne, this.state.inputTwo).send({from: this.state.account}) // use send() whenever you're writing too blockchain}) 
+    this.setState({result: null})
+  }
+
+  getSumFromBlockchain = async () => {
+    const addition_contract = new window.web3.eth.Contract(addition_ABI, addition_address)
+
+    let result = await addition_contract.methods.sum().call() // use call() whenever you're reading from blockchain
     
-    addition_contract.methods.add(1, 9).send({from: this.state.account}, async (data) => { // use send() whenever you're writing too blockchain
-        let result = await addition_contract.methods.sum().call() // use call() whenever you're reading from blockchain
-        console.log('this is the result', result)
-      }) 
-
-    
-
+    this.setState({result})
   }
 
   login = async () => {
@@ -147,6 +157,12 @@ class App extends React.Component {
   });
   };
 
+  handleChange = (propertyName) => event => {
+    this.setState({
+      [propertyName]: event.target.value
+    })
+  }
+
   render() {
     const { isLoggedIn, account, email } = this.state;
     return (
@@ -174,8 +190,18 @@ class App extends React.Component {
               <div>Balance: {this.state.balance}</div>
                 <div>Email: {email}</div>
               </div>
-              <button onClick ={() => this.executeSmartContract()}>Do Math</button>
-
+              {!isLoggedIn? null :
+              <div>
+                <br/>
+                Add two numbers and store them in the blockchain:
+                <br/>
+                <input value = {this.state.inputOne} onChange = {this.handleChange("inputOne")}></input>
+                <input value = {this.state.inputTwo} onChange = {this.handleChange("inputTwo")}></input>
+                <button onClick ={() => this.addNumbersOnBlockchain()}>Add numbers</button>
+                <br/><br/>
+                Read the sum stored on the blockchain: <button onClick = {() => this.getSumFromBlockchain()}>Get Sum</button>{this.state.result}
+                <br/>
+              </div>}
             </div>
             <Switch>
               <Route path="/about">
