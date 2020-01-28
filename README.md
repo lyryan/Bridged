@@ -2,8 +2,12 @@
 
 ## Prerequisites
 
-1. Node installed.
+1. Node, ESLint, and Prettier installed.
 2. Download dependencies by running `npm install`
+
+## Setting up your workspace
+
+1. Go to settings.json in VSCode and paste `"editor.defaultFormatter": "esbenp.prettier-vscode", "editor.formatOnSave": true` and then save.
 
 ## How to run the app in development mode
 
