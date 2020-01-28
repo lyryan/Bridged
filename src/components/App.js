@@ -14,66 +14,66 @@ import Home from '../pages/Home';
 
 const customNodeOptions = {
   rpcUrl: 'http://127.0.0.1:7545', // your own node url
-  chainId: 5777 // chainId of your own node
-}
+  chainId: 5777, // chainId of your own node
+};
 
-const fm = new Fortmatic(process.env.FORTMATIC_KEY, customNodeOptions)
+const fm = new Fortmatic(process.env.FORTMATIC_KEY, customNodeOptions);
 
 // abi for the addition smart contract
 const addition_ABI = [
   {
-    "constant": false,
-    "inputs": [
+    constant: false,
+    inputs: [
       {
-        "internalType": "int256",
-        "name": "x",
-        "type": "int256"
+        internalType: 'int256',
+        name: 'x',
+        type: 'int256',
       },
       {
-        "internalType": "int256",
-        "name": "y",
-        "type": "int256"
-      }
+        internalType: 'int256',
+        name: 'y',
+        type: 'int256',
+      },
     ],
-    "name": "add",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: 'add',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "getSum",
-    "outputs": [
+    constant: true,
+    inputs: [],
+    name: 'getSum',
+    outputs: [
       {
-        "internalType": "int256",
-        "name": "",
-        "type": "int256"
-      }
+        internalType: 'int256',
+        name: '',
+        type: 'int256',
+      },
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "sum",
-    "outputs": [
+    constant: true,
+    inputs: [],
+    name: 'sum',
+    outputs: [
       {
-        "internalType": "int256",
-        "name": "",
-        "type": "int256"
-      }
+        internalType: 'int256',
+        name: '',
+        type: 'int256',
+      },
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  }
-]
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
 // address of the addition smart contract
-const addition_address = '0x65Ed94f41C3368c4Cf6a3F690c123d50bEeDA908'
+const addition_address = '0x65Ed94f41C3368c4Cf6a3F690c123d50bEeDA908';
 
 class App extends React.Component {
   constructor(props) {
@@ -86,13 +86,12 @@ class App extends React.Component {
 
       inputOne: '',
       inputTwo: '',
-      result: null
+      result: null,
     };
   }
 
   componentDidMount = async () => {
-    
-    console.log(fm.getProvider())
+    console.log(fm.getProvider());
     window.web3 = new Web3(fm.getProvider());
 
     const isUserLoggedIn = await fm.user.isLoggedIn();
@@ -102,25 +101,30 @@ class App extends React.Component {
     this.setState({
       isLoggedIn: isUserLoggedIn,
     });
-    
-
   };
 
   addNumbersOnBlockchain = async () => {
+    const addition_contract = new window.web3.eth.Contract(
+      addition_ABI,
+      addition_address,
+    );
 
-    const addition_contract = new window.web3.eth.Contract(addition_ABI, addition_address)
-
-    await addition_contract.methods.add(this.state.inputOne, this.state.inputTwo).send({from: this.state.account}) // use send() whenever you're writing too blockchain}) 
-    this.setState({result: null})
-  }
+    await addition_contract.methods
+      .add(this.state.inputOne, this.state.inputTwo)
+      .send({ from: this.state.account }); // use send() whenever you're writing too blockchain})
+    this.setState({ result: null });
+  };
 
   getSumFromBlockchain = async () => {
-    const addition_contract = new window.web3.eth.Contract(addition_ABI, addition_address)
+    const addition_contract = new window.web3.eth.Contract(
+      addition_ABI,
+      addition_address,
+    );
 
-    let result = await addition_contract.methods.sum().call() // use call() whenever you're reading from blockchain
-    
-    this.setState({result})
-  }
+    let result = await addition_contract.methods.sum().call(); // use call() whenever you're reading from blockchain
+
+    this.setState({ result });
+  };
 
   login = async () => {
     await fm.user
@@ -141,27 +145,26 @@ class App extends React.Component {
   };
 
   getUserData = async () => {
-
-  const userData = await fm.user.getUser();
-  window.web3.eth.getAccounts((err, accounts) => {
-    window.web3.eth.getBalance(accounts[0], (err, wei) => {
-      let balance = wei/1000000000000000000 // convert wei to ether
-      this.setState({
-        account: accounts[0],
-        email: userData.email,
-        balance
-      }).catch(() => {
-        console.log('Error retrieving user data', err);
+    const userData = await fm.user.getUser();
+    window.web3.eth.getAccounts((err, accounts) => {
+      window.web3.eth.getBalance(accounts[0], (err, wei) => {
+        let balance = wei / 1000000000000000000; // convert wei to ether
+        this.setState({
+          account: accounts[0],
+          email: userData.email,
+          balance,
+        }).catch(() => {
+          console.log('Error retrieving user data', err);
+        });
       });
-    })
-  });
+    });
   };
 
-  handleChange = (propertyName) => event => {
+  handleChange = propertyName => event => {
     this.setState({
-      [propertyName]: event.target.value
-    })
-  }
+      [propertyName]: event.target.value,
+    });
+  };
 
   render() {
     const { isLoggedIn, account, email } = this.state;
@@ -186,22 +189,36 @@ class App extends React.Component {
                 }}
               >
                 {`isLoggedIn: ${isLoggedIn}`}
-              <div>{this.state.account}</div>
-              <div>Balance: {this.state.balance}</div>
+                <div>{this.state.account}</div>
+                <div>Balance: {this.state.balance}</div>
                 <div>Email: {email}</div>
               </div>
-              {!isLoggedIn? null :
-              <div>
-                <br/>
-                Add two numbers and store them in the blockchain:
-                <br/>
-                <input value = {this.state.inputOne} onChange = {this.handleChange("inputOne")}></input>
-                <input value = {this.state.inputTwo} onChange = {this.handleChange("inputTwo")}></input>
-                <button onClick ={() => this.addNumbersOnBlockchain()}>Add numbers</button>
-                <br/><br/>
-                Read the sum stored on the blockchain: <button onClick = {() => this.getSumFromBlockchain()}>Get Sum</button>{this.state.result}
-                <br/>
-              </div>}
+              {!isLoggedIn ? null : (
+                <div>
+                  <br />
+                  Add two numbers and store them in the blockchain:
+                  <br />
+                  <input
+                    value={this.state.inputOne}
+                    onChange={this.handleChange('inputOne')}
+                  ></input>
+                  <input
+                    value={this.state.inputTwo}
+                    onChange={this.handleChange('inputTwo')}
+                  ></input>
+                  <button onClick={() => this.addNumbersOnBlockchain()}>
+                    Add numbers
+                  </button>
+                  <br />
+                  <br />
+                  Read the sum stored on the blockchain:{' '}
+                  <button onClick={() => this.getSumFromBlockchain()}>
+                    Get Sum
+                  </button>
+                  {this.state.result}
+                  <br />
+                </div>
+              )}
             </div>
             <Switch>
               <Route path="/about">
