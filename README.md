@@ -13,6 +13,7 @@
 
 1. In root directory, run `npm run dev`
 2. Go to `localhost:8080` in your browser
+3. CD to truffle folder and run `truffle migrate --network development`
 
 ## Commit rules
 
