@@ -11,6 +11,7 @@ import Header from './header';
 import About from '../pages/About';
 import Campaigns from '../pages/Campaigns';
 import Home from '../pages/Home';
+import additionJson from '../../truffle/build/contracts/Addition.json';
 
 const customNodeOptions = {
   rpcUrl: 'http://127.0.0.1:7545', // your own node url
@@ -72,8 +73,14 @@ const addition_ABI = [
     type: 'function',
   },
 ];
+
+const getAdditionAddress = () => {
+  let json = JSON.stringify(additionJson);
+  return JSON.parse(json).networks[5777].address;
+};
+
 // address of the addition smart contract
-const addition_address = '0x65Ed94f41C3368c4Cf6a3F690c123d50bEeDA908';
+const addition_address = getAdditionAddress();
 
 class App extends React.Component {
   constructor(props) {
