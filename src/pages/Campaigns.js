@@ -1,7 +1,14 @@
 import React from 'react';
+import Form from '../components/form';
 
-export default class App extends React.Component {
-    render() {
-      return <h1>This page will display the list of campaignss</h1>;
-    }
+class Campaign extends React.Component {
+  render() {
+    return (
+      <div>
+        <Form />
+      </div>
+    );
   }
+}
+
+export default Campaign;

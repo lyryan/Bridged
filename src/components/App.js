@@ -227,7 +227,7 @@ class App extends React.Component {
                 </div>
               )}
             </div>
-            <Switch>
+            {/* <Switch>
               <Route path="/about">
                 <About />
               </Route>
@@ -237,7 +237,7 @@ class App extends React.Component {
               <Route path="/">
                 <Home />
               </Route>
-            </Switch>
+            </Switch> */}
           </div>
         </Router>
       </>
