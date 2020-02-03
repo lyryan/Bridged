@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Logo from '../../svg/logo-black.svg';
+import Campaigns from '../../pages/Campaigns';
 
 const useStyles = makeStyles(theme => ({
   colorPrimary: {
@@ -102,7 +104,7 @@ const PrimarySearchAppBar = props => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const { handleLogIn, isLoggedIn, logout } = props;
+  const { handleLogIn, isLoggedIn, logout, account } = props;
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -162,52 +164,55 @@ const PrimarySearchAppBar = props => {
   );
 
   return (
-    <div>
-      <AppBar className={classes.colorPrimary} position="static">
-        <Toolbar>
-          <div className={classes.grow}>
-            <div className={classes.nav}>
-              <Typography className={classes.navItem} variant="subtitle1">
-                Explore
-              </Typography>
-              <Typography className={classes.navItem} variant="subtitle1">
-                Start a Campaign
-              </Typography>
+    <Router>
+      <div>
+        <AppBar className={classes.colorPrimary} position="static">
+          <Toolbar>
+            <div className={classes.grow}>
+              <div className={classes.nav}>
+                <Typography className={classes.navItem} variant="subtitle1">
+                  Explore
+                </Typography>
+                <Link to="/campaigns">
+                  <Typography className={classes.navItem} variant="subtitle1">
+                    Start a Campaign
+                  </Typography>
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div className={classes.grow}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Logo />
+            <div className={classes.grow}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Logo />
+              </div>
             </div>
-          </div>
 
-          <div className={classes.grow} />
+            <div className={classes.grow} />
 
-          <div className={classes.sectionDesktop}>
-            <Button
-              style={{ display: isLoggedIn ? 'none' : 'block' }}
-              onClick={handleLogIn}
-              className={classes.logIn}
-              variant="outlined"
-            >
-              {isLoggedIn ? 'Sign Out' : 'Sign In'}
-            </Button>
-            <Button
-              style={{ display: isLoggedIn ? 'block' : 'none' }}
-              onClick={logout}
-              className={classes.logIn}
-              variant="outlined"
-            >
-              Sign Out
-            </Button>
-            {/* <IconButton
+            <div className={classes.sectionDesktop}>
+              <Button
+                style={{ display: isLoggedIn ? 'none' : 'block' }}
+                onClick={handleLogIn}
+                className={classes.logIn}
+                variant="outlined"
+              >
+                {isLoggedIn ? 'Sign Out' : 'Sign In'}
+              </Button>
+              <Button
+                style={{ display: isLoggedIn ? 'block' : 'none' }}
+                onClick={logout}
+                className={classes.logIn}
+                variant="outlined"
+              >
+                Sign Out
+              </Button>
+              {/* <IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -217,24 +222,30 @@ const PrimarySearchAppBar = props => {
             >
               <AccountCircle />
             </IconButton> */}
-          </div>
+            </div>
 
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </div>
+            <div className={classes.sectionMobile}>
+              <IconButton
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+        <Switch>
+          <Route path="/campaigns">
+            <Campaigns account={account} />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 };
 
