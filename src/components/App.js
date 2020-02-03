@@ -182,6 +182,7 @@ class App extends React.Component {
             this.login();
           }}
           isLoggedIn={isLoggedIn}
+          account={account}
           logout={() => {
             this.logout();
           }}

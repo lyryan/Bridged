@@ -104,7 +104,7 @@ const PrimarySearchAppBar = props => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const { handleLogIn, isLoggedIn, logout } = props;
+  const { handleLogIn, isLoggedIn, logout, account } = props;
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -241,7 +241,7 @@ const PrimarySearchAppBar = props => {
         {renderMenu}
         <Switch>
           <Route path="/campaigns">
-            <Campaigns />
+            <Campaigns account={account} />
           </Route>
         </Switch>
       </div>

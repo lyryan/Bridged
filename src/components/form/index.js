@@ -46,6 +46,9 @@ class Form extends React.Component {
     };
   }
 
+  /* campaign is the parent */
+  /* every time handle change is invoked, you call the function passed in from campaign.js, that function will change campaigns state */
+  /* Then we will be using the props to fill in the fields */
   handleChange = e => {
     console.log({
       [`${e.target.name}`]: e.target.value,
@@ -57,14 +60,7 @@ class Form extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {
-      campaignName,
-      campaignDesc,
-      fundingGoal,
-      daysToExpiration,
-    } = this.state;
-
-    console.log(campaignName, campaignDesc, fundingGoal, daysToExpiration);
+    const 
   };
 
   render() {
