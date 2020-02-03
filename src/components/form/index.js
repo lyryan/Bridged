@@ -36,74 +36,52 @@ const useStyles = {
 };
 
 class Form extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      campaignName: '',
-      campaignDesc: '',
-      fundingGoal: '',
-      daysToExpiration: '',
-    };
-  }
-
-  /* campaign is the parent */
-  /* every time handle change is invoked, you call the function passed in from campaign.js, that function will change campaigns state */
-  /* Then we will be using the props to fill in the fields */
-  handleChange = e => {
-    console.log({
-      [`${e.target.name}`]: e.target.value,
-    });
-    this.setState({
-      [`${e.target.name}`]: e.target.value,
-    });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-  };
-
   render() {
-    const { classes } = this.props;
+    const { classes, data, handleChange, handleSubmit } = this.props;
 
     return (
       <div className={classes.root}>
         <form
           className={classes.form}
-          onSubmit={e => {
-            this.handleSubmit(e);
-          }}
+          onSubmit={handleSubmit}
           noValidate
           autoComplete="off"
         >
           <TextField
             className={classes.formField}
             label="Campaign Name"
-            name="campaignName"
+            name="title"
             color="primary"
-            onChange={this.handleChange}
+            onChange={handleChange}
             width="20"
+            value={data.title}
           />
           <TextField
             className={classes.formField}
             label="Campaign Description"
-            name="campaignDesc"
+            name="description"
             color="primary"
             multiline
-            onChange={this.handleChange}
+            onChange={handleChange}
+            value={data.description}
           />
           <TextField
             className={classes.formField}
             label="Funding Goal"
             name="fundingGoal"
             color="primary"
-            onChange={this.handleChange}
+            type="number"
+            onChange={handleChange}
+            value={data.fundingGoal}
           />
           <TextField
             className={classes.formField}
             label="Days to Expiration"
-            name="daysToExpiration"
+            name="daysUntilExpiration"
             color="primary"
-            onChange={this.handleChange}
+            type="number"
+            onChange={handleChange}
+            value={data.daysUntilExpiration}
           />
           <Button
             className={classes.button}
