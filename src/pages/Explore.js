@@ -11,12 +11,6 @@ class Explore extends React.Component {
     };
   }
 
-  /*static getDerivedStateFromProps(props, state) {
-    console.log('in get derived state from props');
-    console.log(props);
-    console.log(state);
-  }*/
-
   getCampaigns = () => {
     console.log(this.props);
     console.log(this.props.web3);
@@ -49,12 +43,14 @@ class Explore extends React.Component {
       });
   };
 
-  componentDidMount = async () => {
-    this.getCampaigns();
-  };
+  componentDidUpdate(prevProps) {
+    if (this.props.web3 !== prevProps.web3) {
+      this.getCampaigns();
+    }
+  }
 
   render() {
-    return <div>Home</div>;
+    return <div>Campaigns:</div>;
   }
 }
 
