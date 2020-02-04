@@ -11,7 +11,7 @@ class Explore extends React.Component {
     };
   }
 
-  getCampaigns = () => {
+  getCampaigns = async () => {
     console.log(this.props);
     console.log(this.props.web3);
     const crowdfundInstance = new this.props.web3.eth.Contract(
@@ -19,7 +19,9 @@ class Explore extends React.Component {
       crowdfunding.ADDRESS,
     );
 
-    crowdfundInstance.methods
+    let campaigns = [];
+
+    await crowdfundInstance.methods
       .returnAllCampaigns()
       .call()
       .then(campaigns => {
@@ -35,12 +37,12 @@ class Explore extends React.Component {
             .then(campaignData => {
               const campaignInfo = campaignData;
               campaignInfo.contract = campaignInst;
-              this.setState({
-                campaigns: [...this.state.campaigns, campaignInfo],
-              });
+              campaigns.push(campaignInfo);
             });
         });
       });
+
+    this.setState({ campaigns });
   };
 
   componentDidUpdate(prevProps) {
