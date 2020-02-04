@@ -10,6 +10,7 @@ class Explore extends React.Component {
     super(props);
     this.state = {
       campaigns: [],
+      campaignContract: '',
     };
   }
 
@@ -30,18 +31,11 @@ class Explore extends React.Component {
             campaignAddress,
           );
 
-          let campaignInfo;
-          await campaignInst.methods
-            .getDetails()
-            .call()
-            .then(campaignData => {
-              campaignInfo = campaignData;
-              campaignInfo.contract = campaignInst;
-            });
-
+          let campaignInfo = await campaignInst.methods.getDetails().call();
+          campaignInfo.address = campaignAddress;
+          campaignInfo.contract = campaignInst;
           return campaignInfo;
         });
-
         const campaigns = await Promise.all(promises);
         this.setState({ campaigns });
       });
@@ -72,9 +66,7 @@ class Explore extends React.Component {
           campaignCreator={el.campaignStarter}
           deadline={expiryDate}
           fundingGoal={goalAmount}
-          route={`/campaigns/${el.campaignTitle
-            .replace(/ /g, '-')
-            .toLowerCase()}`}
+          route={`/campaigns/${el.address}`}
         />
       );
     });
