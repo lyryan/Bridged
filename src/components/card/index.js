@@ -7,7 +7,7 @@ const Card = props => {
     campaignTitle,
     campaignDesc,
     campaignCreator,
-    daysUntilExpiration,
+    deadline,
     fundingGoal,
     route,
   } = props;
@@ -33,8 +33,8 @@ const Card = props => {
       <div className={styles.campaignCreator}>
         Created by: {campaignCreator}
       </div>
-      <div>Days to Go: {daysUntilExpiration}</div>
-      <div>Goal Amount: {fundingGoal}</div>
+      <div>Expiration Date: {deadline}</div>
+      <div>Goal Amount: {fundingGoal} Ethers</div>
       {button}
     </div>
   );

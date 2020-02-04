@@ -61,14 +61,17 @@ class Explore extends React.Component {
 
   showAllCampaigns = () => {
     return this.state.campaigns.map((el, index) => {
+      const options = { dateStyle: 'full' };
+      const expiryDate = new Date(el.deadline * 1000).toLocaleString(options); // convert to local time
+      const goalAmount = this.props.web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
       return (
         <Card
           key={index}
           campaignTitle={el.campaignTitle}
           campaignDesc={el.campaignDesc}
           campaignCreator={el.campaignStarter}
-          daysUntilExpiration={el.deadline}
-          fundingGoal={el.goalAmount}
+          deadline={expiryDate}
+          fundingGoal={goalAmount}
           route={`/campaigns/${el.campaignTitle
             .replace(/ /g, '-')
             .toLowerCase()}`}

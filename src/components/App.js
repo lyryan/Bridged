@@ -31,7 +31,7 @@ class App extends React.Component {
     console.log(fm.getProvider());
     const web3 = await new Web3(fm.getProvider());
 
-    this.setState({ web3 });
+    await this.setState({ web3 });
 
     const isUserLoggedIn = await fm.user.isLoggedIn();
     if (isUserLoggedIn) {
@@ -64,7 +64,7 @@ class App extends React.Component {
     const userData = await fm.user.getUser();
     this.state.web3.eth.getAccounts((err, accounts) => {
       this.state.web3.eth.getBalance(accounts[0], (err, wei) => {
-        let balance = wei / 1000000000000000000; // convert wei to ether
+        let balance = this.state.web3.utils.fromWei(wei, 'ether'); // convert wei to ether
         this.setState({
           account: accounts[0],
           email: userData.email,
