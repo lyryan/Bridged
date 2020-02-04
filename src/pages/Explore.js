@@ -24,9 +24,9 @@ class Explore extends React.Component {
     await crowdfundInstance.methods
       .returnAllCampaigns()
       .call()
-      .then(campaigns => {
-        console.log('these are all the campaigns being returned', campaigns);
-        campaigns.forEach(campaignAddress => {
+      .then(allCampaigns => {
+        console.log('these are all the campaigns being returned', allCampaigns);
+        allCampaigns.forEach(campaignAddress => {
           const campaignInst = new this.props.web3.eth.Contract(
             campaign.ABI,
             campaignAddress,
@@ -51,8 +51,27 @@ class Explore extends React.Component {
     }
   }
 
+  showAllCampaigns = () => {
+    return this.state.campaigns.map(el => {
+      console.log('this is the element', el);
+      return (
+        <div>
+          {el.campaignTitle}
+          <br />
+          {el.campaignDesc}
+        </div>
+      );
+    });
+  };
+
   render() {
-    return <div>Campaigns:</div>;
+    console.log('getting campaigns', this.state.campaigns);
+    return (
+      <div>
+        Campaigns:
+        {this.showAllCampaigns()}
+      </div>
+    );
   }
 }
 
