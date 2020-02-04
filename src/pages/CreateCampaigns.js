@@ -4,7 +4,7 @@ import React from 'react';
 import Form from '../components/form';
 import { crowdfunding, campaign } from '../config';
 
-class Campaign extends React.Component {
+class CreateCampaign extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +18,11 @@ class Campaign extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log('in createcampaigns.js');
+    console.log(this.props.web3);
+  }
+
   handleChange = e => {
     let newCampaign = { ...this.state.newCampaign };
     const [field, value] = [e.target.name, e.target.value];
@@ -26,12 +31,14 @@ class Campaign extends React.Component {
   };
 
   handleSubmit = e => {
+    console.log(this.props.web3);
+
     e.preventDefault();
     this.startCampaign();
   };
 
   startCampaign = async () => {
-    const crowdfundInstance = new window.web3.eth.Contract(
+    const crowdfundInstance = new this.props.web3.eth.Contract(
       crowdfunding.ABI,
       crowdfunding.ADDRESS,
     );
@@ -41,7 +48,10 @@ class Campaign extends React.Component {
         this.state.newCampaign.title,
         this.state.newCampaign.description,
         this.state.newCampaign.daysUntilExpiration,
-        web3.utils.toWei(this.state.newCampaign.fundingGoal, 'ether'),
+        this.props.web3.utils.toWei(
+          this.state.newCampaign.fundingGoal,
+          'ether',
+        ),
       )
       .send({
         from: this.props.account,
@@ -51,7 +61,7 @@ class Campaign extends React.Component {
         const campaignInfo = res.events.CampaignCreated.returnValues; // event object
         campaignInfo.currentAmount = 0;
         campaignInfo.currentState = 0;
-        campaignInfo.contract = new window.web3.eth.Contract(
+        campaignInfo.contract = new this.props.web3.eth.Contract(
           campaign.ABI,
           res.events.CampaignCreated.returnValues.contractAddress,
         );
@@ -61,6 +71,7 @@ class Campaign extends React.Component {
 
   render() {
     const { newCampaign } = this.state;
+
     return (
       <div>
         <Form
@@ -73,4 +84,4 @@ class Campaign extends React.Component {
   }
 }
 
-export default Campaign;
+export default CreateCampaign;

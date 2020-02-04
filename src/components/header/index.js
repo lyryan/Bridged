@@ -11,7 +11,8 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Logo from '../../svg/logo-black.svg';
-import Campaigns from '../../pages/Campaigns';
+import CreateCampaigns from '../../pages/CreateCampaigns';
+import Explore from '../../pages/Explore';
 
 const useStyles = makeStyles(theme => ({
   colorPrimary: {
@@ -104,7 +105,7 @@ const PrimarySearchAppBar = props => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const { handleLogIn, isLoggedIn, logout, account } = props;
+  const { handleLogIn, isLoggedIn, logout, account, web3 } = props;
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -170,10 +171,12 @@ const PrimarySearchAppBar = props => {
           <Toolbar>
             <div className={classes.grow}>
               <div className={classes.nav}>
-                <Typography className={classes.navItem} variant="subtitle1">
-                  Explore
-                </Typography>
-                <Link to="/campaigns">
+                <Link style={{ textDecoration: 'none' }} to="/explore">
+                  <Typography className={classes.navItem} variant="subtitle1">
+                    Explore
+                  </Typography>
+                </Link>
+                <Link style={{ textDecoration: 'none' }} to="/create-campaign">
                   <Typography className={classes.navItem} variant="subtitle1">
                     Start a Campaign
                   </Typography>
@@ -189,7 +192,9 @@ const PrimarySearchAppBar = props => {
                   alignItems: 'center',
                 }}
               >
-                <Logo />
+                <Link to="/">
+                  <Logo />
+                </Link>
               </div>
             </div>
 
@@ -240,8 +245,11 @@ const PrimarySearchAppBar = props => {
         {renderMobileMenu}
         {renderMenu}
         <Switch>
-          <Route path="/campaigns">
-            <Campaigns account={account} />
+          <Route path="/create-campaign">
+            <CreateCampaigns account={account} web3={web3} />
+          </Route>
+          <Route path="/explore">
+            <Explore web3={web3} />
           </Route>
         </Switch>
       </div>
