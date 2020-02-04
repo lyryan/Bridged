@@ -1,5 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Switch,
+  withRouter,
+} from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,6 +19,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Logo from '../../svg/logo-black.svg';
 import CreateCampaigns from '../../pages/CreateCampaigns';
 import Explore from '../../pages/Explore';
+import Campaign from '../../pages/Campaign';
 
 const useStyles = makeStyles(theme => ({
   colorPrimary: {
@@ -251,6 +258,10 @@ const PrimarySearchAppBar = props => {
           <Route path="/explore">
             <Explore web3={web3} />
           </Route>
+          <Route
+            path="/campaigns/:campaignTitle"
+            component={withRouter(Campaign)}
+          />
         </Switch>
       </div>
     </Router>

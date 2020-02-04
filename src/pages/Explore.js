@@ -61,7 +61,6 @@ class Explore extends React.Component {
 
   showAllCampaigns = () => {
     return this.state.campaigns.map((el, index) => {
-      console.log('this is the element', el);
       return (
         <Card
           key={index}
@@ -70,7 +69,9 @@ class Explore extends React.Component {
           campaignCreator={el.campaignStarter}
           daysUntilExpiration={el.deadline}
           fundingGoal={el.goalAmount}
-          route="/"
+          route={`/campaigns/${el.campaignTitle
+            .replace(/ /g, '-')
+            .toLowerCase()}`}
         />
       );
     });
