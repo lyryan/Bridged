@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { crowdfunding, campaign } from '../config';
+import Card from '../components/card';
+import styles from './Explore.module.css';
 
 class Explore extends React.Component {
   constructor(props) {
@@ -51,15 +53,25 @@ class Explore extends React.Component {
     }
   }
 
+  componentDidMount = () => {
+    if (this.props.web3) {
+      this.getCampaigns();
+    }
+  };
+
   showAllCampaigns = () => {
-    return this.state.campaigns.map((el, key) => {
+    return this.state.campaigns.map((el, index) => {
+      console.log('this is the element', el);
       return (
-        <div key={key}>
-          campaign:
-          {el.campaignTitle}
-          <br />
-          {el.campaignDesc}
-        </div>
+        <Card
+          key={index}
+          campaignTitle={el.campaignTitle}
+          campaignDesc={el.campaignDesc}
+          campaignCreator={el.campaignStarter}
+          daysUntilExpiration={el.deadline}
+          fundingGoal={el.goalAmount}
+          route="/"
+        />
       );
     });
   };
@@ -73,8 +85,7 @@ class Explore extends React.Component {
   render() {
     return (
       <div>
-        Campaigns:
-        {this.showAllCampaigns()}
+        <div className={styles.cardContainer}>{this.showAllCampaigns()}</div>
       </div>
     );
   }
