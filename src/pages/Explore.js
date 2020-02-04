@@ -11,38 +11,38 @@ class Explore extends React.Component {
     };
   }
 
-  getCampaigns = async () => {
-    console.log(this.props);
-    console.log(this.props.web3);
+  getCampaigns = () => {
     const crowdfundInstance = new this.props.web3.eth.Contract(
       crowdfunding.ABI,
       crowdfunding.ADDRESS,
     );
 
-    let campaigns = [];
-
-    await crowdfundInstance.methods
+    crowdfundInstance.methods
       .returnAllCampaigns()
       .call()
-      .then(allCampaigns => {
+      .then(async allCampaigns => {
         console.log('these are all the campaigns being returned', allCampaigns);
-        allCampaigns.forEach(campaignAddress => {
+        const promises = allCampaigns.map(async campaignAddress => {
           const campaignInst = new this.props.web3.eth.Contract(
             campaign.ABI,
             campaignAddress,
           );
-          campaignInst.methods
+
+          let campaignInfo;
+          await campaignInst.methods
             .getDetails()
             .call()
             .then(campaignData => {
-              const campaignInfo = campaignData;
+              campaignInfo = campaignData;
               campaignInfo.contract = campaignInst;
-              campaigns.push(campaignInfo);
             });
-        });
-      });
 
-    this.setState({ campaigns });
+          return campaignInfo;
+        });
+
+        const campaigns = await Promise.all(promises);
+        this.setState({ campaigns });
+      });
   };
 
   componentDidUpdate(prevProps) {
@@ -52,10 +52,10 @@ class Explore extends React.Component {
   }
 
   showAllCampaigns = () => {
-    return this.state.campaigns.map(el => {
-      console.log('this is the element', el);
+    return this.state.campaigns.map((el, key) => {
       return (
-        <div>
+        <div key={key}>
+          campaign:
           {el.campaignTitle}
           <br />
           {el.campaignDesc}
@@ -64,8 +64,13 @@ class Explore extends React.Component {
     });
   };
 
+  componentDidMount = () => {
+    if (this.props.web3) {
+      this.getCampaigns();
+    }
+  };
+
   render() {
-    console.log('getting campaigns', this.state.campaigns);
     return (
       <div>
         Campaigns:

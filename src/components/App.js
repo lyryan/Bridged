@@ -23,7 +23,7 @@ class App extends React.Component {
       email: '',
       balance: '',
 
-      web3: {},
+      web3: null,
     };
   }
 
