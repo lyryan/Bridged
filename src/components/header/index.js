@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -259,8 +260,10 @@ const PrimarySearchAppBar = props => {
             <Explore web3={web3} />
           </Route>
           <Route
-            path="/campaigns/:campaignTitle"
-            component={withRouter(Campaign)}
+            path="/campaigns/:address"
+            component={withRouter(({ history, ...props }) => (
+              <Campaign {...props} web3={web3} />
+            ))}
           />
         </Switch>
       </div>
