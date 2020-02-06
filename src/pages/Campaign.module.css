@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 600px;
+  width: 100%;
+  background-color: #f6f6f6;
+}
+
+.itemContainer {
+}
+
+.item {
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+.itemImage {
+  margin: 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 500px;
+  height: 500px;
+}
+
+.button {
+  letter-spacing: 2px;
+  font-size: 15px;
+  border: none;
+  width: 40%;
+  padding: 15px 10px;
+  color: white;
+  background-color: #57aa7c;
+  text-align: center;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.7;
+}

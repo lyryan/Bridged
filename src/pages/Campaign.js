@@ -1,6 +1,7 @@
 /* eslint-disable */
-import React from 'react';
+import React, { Fragment } from 'react';
 import { campaign } from '../config';
+import styles from './Campaign.module.css';
 
 class Campaign extends React.Component {
   constructor(props) {
@@ -40,13 +41,32 @@ class Campaign extends React.Component {
   render() {
     const { campaignDetails } = this.state;
     return (
-      <div>
-        <div>Campaign Title: {campaignDetails.campaignTitle} </div>
-        <div>Campaign Description: {campaignDetails.campaignDesc}</div>
-        <div>Campaign Creator: {campaignDetails.campaignStarter}</div>
-        <div>Days until Expiration: {campaignDetails.deadline}</div>
-        <div>Funding Goal: {campaignDetails.goalAmount}</div>
-      </div>
+      <Fragment>
+        <div className={styles.container}>
+          <div className={styles.itemContainer}>
+            <div className={styles.item}>
+              Campaign Title: {campaignDetails.campaignTitle}{' '}
+            </div>
+            <div className={styles.item}>
+              Campaign Description: {campaignDetails.campaignDesc}
+            </div>
+            <div className={styles.item}>
+              Campaign Creator: {campaignDetails.campaignStarter}
+            </div>
+            <div className={styles.item}>
+              Days until Expiration: {campaignDetails.deadline}
+            </div>
+            <div className={styles.item}>
+              Funding Goal: {campaignDetails.goalAmount}
+            </div>
+            <button type="button" className={styles.button}>
+              Contribute
+            </button>
+          </div>
+          <div className={styles.itemImage}>Image</div>
+        </div>
+        <div>Campaign Info</div>
+      </Fragment>
     );
   }
 }
