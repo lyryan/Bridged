@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import Fortmatic from 'fortmatic';
@@ -61,10 +59,11 @@ class App extends React.Component {
   };
 
   getUserData = async () => {
+    const { web3 } = this.state;
     const userData = await fm.user.getUser();
-    this.state.web3.eth.getAccounts((err, accounts) => {
-      this.state.web3.eth.getBalance(accounts[0], (err, wei) => {
-        let balance = this.state.web3.utils.fromWei(wei, 'ether'); // convert wei to ether
+    web3.eth.getAccounts((error, accounts) => {
+      web3.eth.getBalance(accounts[0], (err, wei) => {
+        const balance = web3.utils.fromWei(wei, 'ether'); // convert wei to ether
         this.setState({
           account: accounts[0],
           email: userData.email,
@@ -77,7 +76,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { isLoggedIn, account, email, web3 } = this.state;
+    const { isLoggedIn, account, balance, email, web3 } = this.state;
     return (
       <>
         <Header
@@ -100,8 +99,8 @@ class App extends React.Component {
               }}
             >
               {`isLoggedIn: ${isLoggedIn}`}
-              <div>{this.state.account}</div>
-              <div>Balance: {this.state.balance}</div>
+              <div>{account}</div>
+              <div>Balance: {balance}</div>
               <div>Email: {email}</div>
             </div>
           </div>

@@ -1,4 +1,3 @@
-/*eslint-disable */
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -261,8 +260,8 @@ const PrimarySearchAppBar = props => {
           </Route>
           <Route
             path="/campaigns/:address"
-            component={withRouter(({ history, ...props }) => (
-              <Campaign {...props} web3={web3} />
+            component={withRouter(({ ...childProps }) => (
+              <Campaign match={childProps.match} web3={web3} />
             ))}
           />
         </Switch>

@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React from 'react';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
@@ -10,12 +8,26 @@ class Explore extends React.Component {
     super(props);
     this.state = {
       campaigns: [],
-      campaignContract: '',
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const { web3 } = this.props;
+    if (web3 !== prevProps.web3) {
+      this.getCampaigns();
+    }
+  }
+
+  componentDidMount = () => {
+    const { web3 } = this.props;
+    if (web3) {
+      this.getCampaigns();
+    }
+  };
+
   getCampaigns = () => {
-    const crowdfundInstance = new this.props.web3.eth.Contract(
+    const { web3 } = this.props;
+    const crowdfundInstance = new web3.eth.Contract(
       crowdfunding.ABI,
       crowdfunding.ADDRESS,
     );
@@ -26,12 +38,12 @@ class Explore extends React.Component {
       .then(async allCampaigns => {
         console.log('these are all the campaigns being returned', allCampaigns);
         const promises = allCampaigns.map(async campaignAddress => {
-          const campaignInst = new this.props.web3.eth.Contract(
+          const campaignInst = new web3.eth.Contract(
             campaign.ABI,
             campaignAddress,
           );
 
-          let campaignInfo = await campaignInst.methods.getDetails().call();
+          const campaignInfo = await campaignInst.methods.getDetails().call();
           campaignInfo.address = campaignAddress;
           campaignInfo.contract = campaignInst;
           return campaignInfo;
@@ -41,26 +53,16 @@ class Explore extends React.Component {
       });
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.web3 !== prevProps.web3) {
-      this.getCampaigns();
-    }
-  }
-
-  componentDidMount = () => {
-    if (this.props.web3) {
-      this.getCampaigns();
-    }
-  };
-
   showAllCampaigns = () => {
-    return this.state.campaigns.map((el, index) => {
+    const { web3 } = this.props;
+    const { campaigns } = this.state;
+    return campaigns.map(el => {
       const options = { dateStyle: 'full' };
       const expiryDate = new Date(el.deadline * 1000).toLocaleString(options); // convert to local time
-      const goalAmount = this.props.web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
+      const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
       return (
         <Card
-          key={index}
+          key={el.address}
           campaignTitle={el.campaignTitle}
           campaignDesc={el.campaignDesc}
           campaignCreator={el.campaignStarter}
@@ -70,12 +72,6 @@ class Explore extends React.Component {
         />
       );
     });
-  };
-
-  componentDidMount = () => {
-    if (this.props.web3) {
-      this.getCampaigns();
-    }
   };
 
   render() {
