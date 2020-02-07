@@ -1,0 +1,35 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 300px;
+  height: 400px;
+  background-color: #f7f7f7;
+  margin: 20px;
+}
+
+.campaignImage {
+  margin: 5px;
+  height: 150px;
+  background-color: white;
+}
+
+.campaignCreator {
+  word-wrap: break-word;
+}
+
+.button {
+  letter-spacing: 2px;
+  font-size: 15px;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  background-color: #57aa7c;
+  text-align: center;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.7;
+}

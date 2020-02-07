@@ -1,3 +1,4 @@
+/* eslint-disable */
 // We will be using Solidity version 0.5.4
 pragma solidity 0.5.4;
 

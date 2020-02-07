@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import Fortmatic from 'fortmatic';
@@ -22,12 +20,16 @@ class App extends React.Component {
       account: '',
       email: '',
       balance: '',
+
+      web3: null,
     };
   }
 
   componentDidMount = async () => {
     console.log(fm.getProvider());
-    window.web3 = new Web3(fm.getProvider());
+    const web3 = await new Web3(fm.getProvider());
+
+    await this.setState({ web3 });
 
     const isUserLoggedIn = await fm.user.isLoggedIn();
     if (isUserLoggedIn) {
@@ -57,10 +59,11 @@ class App extends React.Component {
   };
 
   getUserData = async () => {
+    const { web3 } = this.state;
     const userData = await fm.user.getUser();
-    window.web3.eth.getAccounts((err, accounts) => {
-      window.web3.eth.getBalance(accounts[0], (err, wei) => {
-        let balance = wei / 1000000000000000000; // convert wei to ether
+    web3.eth.getAccounts((error, accounts) => {
+      web3.eth.getBalance(accounts[0], (err, wei) => {
+        const balance = web3.utils.fromWei(wei, 'ether'); // convert wei to ether
         this.setState({
           account: accounts[0],
           email: userData.email,
@@ -73,7 +76,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { isLoggedIn, account, email } = this.state;
+    const { isLoggedIn, account, balance, email, web3 } = this.state;
     return (
       <>
         <Header
@@ -85,6 +88,7 @@ class App extends React.Component {
           logout={() => {
             this.logout();
           }}
+          web3={web3}
         />
         <div>
           <div>
@@ -95,8 +99,8 @@ class App extends React.Component {
               }}
             >
               {`isLoggedIn: ${isLoggedIn}`}
-              <div>{this.state.account}</div>
-              <div>Balance: {this.state.balance}</div>
+              <div>{account}</div>
+              <div>Balance: {balance}</div>
               <div>Email: {email}</div>
             </div>
           </div>
