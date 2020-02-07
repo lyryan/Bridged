@@ -261,7 +261,11 @@ const PrimarySearchAppBar = props => {
           <Route
             path="/campaigns/:address"
             component={withRouter(({ ...childProps }) => (
-              <Campaign match={childProps.match} web3={web3} />
+              <Campaign
+                match={childProps.match}
+                web3={web3}
+                account={account}
+              />
             ))}
           />
         </Switch>

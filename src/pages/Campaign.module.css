@@ -37,6 +37,12 @@
   cursor: pointer;
 }
 
+.button[type='button']:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  pointer-events: none;
+}
+
 .button:hover {
   opacity: 0.7;
 }
