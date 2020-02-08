@@ -1,13 +1,32 @@
+/*eslint-disable*/
 import React from 'react';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
 import styles from './Explore.module.css';
+import { Link } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const getFilteredList = (arr, input) => {
+  if (input === '') return [];
+  let len = input.length;
+  return arr.filter(element => {
+    if (
+      element.address.substring(0, len) === input ||
+      element.campaignTitle.substring(0, len) === input ||
+      element.campaignStarter.substring(0, len) === input
+    )
+      return element;
+  });
+};
 
 class Explore extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       campaigns: [],
+      searchInput: '',
+      searchResults: [],
+      loading: true,
     };
   }
 
@@ -25,14 +44,15 @@ class Explore extends React.Component {
     }
   };
 
-  getCampaigns = () => {
+  getCampaigns = async () => {
+    this.setState({ loading: true });
     const { web3 } = this.props;
     const crowdfundInstance = new web3.eth.Contract(
       crowdfunding.ABI,
       crowdfunding.ADDRESS,
     );
 
-    crowdfundInstance.methods
+    await crowdfundInstance.methods
       .returnAllCampaigns()
       .call()
       .then(async allCampaigns => {
@@ -51,6 +71,7 @@ class Explore extends React.Component {
         const campaigns = await Promise.all(promises);
         this.setState({ campaigns });
       });
+    this.setState({ loading: false });
   };
 
   showAllCampaigns = () => {
@@ -74,10 +95,52 @@ class Explore extends React.Component {
     });
   };
 
+  handleChange = e => {
+    const input = e.target.value;
+    const searchResults = getFilteredList(this.state.campaigns, input);
+    this.setState({ searchInput: input, searchResults });
+  };
+
+  renderSearchResults = () => {
+    return this.state.searchResults.map(element => {
+      return (
+        <div key={element.address}>
+          <Link to={`/campaigns/${element.address}`}>
+            Title: {element.campaignTitle}
+            <br />
+            Creator:
+            <br /> {element.address}
+          </Link>
+        </div>
+      );
+    });
+  };
+
   render() {
     return (
       <div>
-        <div className={styles.cardContainer}>{this.showAllCampaigns()}</div>
+        {this.state.loading ? (
+          <CircularProgress />
+        ) : (
+          <div>
+            <form>
+              <input
+                type="text"
+                placeholder="Search Campaigns..."
+                onChange={this.handleChange}
+                value={this.state.searchInput}
+              />
+            </form>
+            <div>
+              {this.state.searchResults.length > 0
+                ? this.renderSearchResults()
+                : null}
+            </div>
+            <div className={styles.cardContainer}>
+              {this.showAllCampaigns()}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
