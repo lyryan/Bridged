@@ -103,8 +103,6 @@ class Campaign extends React.Component {
       });
   };
 
-  getRefund = () => {};
-
   handleChange = e => {
     e.preventDefault();
     this.setState({
@@ -114,6 +112,7 @@ class Campaign extends React.Component {
 
   render() {
     const { campaignDetails } = this.state;
+    console.log(this.state);
     return (
       <>
         <div className={styles.container}>

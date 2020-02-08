@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React from 'react';
 import Form from '../components/form';
 import { crowdfunding, campaign } from '../config';
@@ -10,7 +11,7 @@ class CreateCampaign extends React.Component {
         title: '',
         description: '',
         fundingGoal: '',
-        daysUntilExpiration: '',
+        selectedDeadline: new Date(),
       },
     };
   }
@@ -20,6 +21,13 @@ class CreateCampaign extends React.Component {
     const newData = { ...formData };
     const [field, value] = [e.target.name, e.target.value];
     newData[field] = value;
+    this.setState({ formData: newData });
+  };
+
+  handleDateChange = date => {
+    const { formData } = this.state;
+    const newData = { ...formData };
+    newData.selectedDeadline = date;
     this.setState({ formData: newData });
   };
 
@@ -41,7 +49,7 @@ class CreateCampaign extends React.Component {
       .startCampaign(
         formData.title,
         formData.description,
-        formData.daysUntilExpiration,
+        Date.parse(formData.selectedDeadline) / 1000,
         web3.utils.toWei(formData.fundingGoal, 'ether'),
       )
       .send({
@@ -67,6 +75,7 @@ class CreateCampaign extends React.Component {
         <Form
           data={formData}
           handleChange={this.handleChange}
+          handleDateChange={this.handleDateChange}
           handleSubmit={this.handleSubmit}
         />{' '}
       </div>

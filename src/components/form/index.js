@@ -1,7 +1,14 @@
+import 'date-fns';
+
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {
+  KeyboardDateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 const useStyles = {
   form: {
@@ -37,8 +44,13 @@ const useStyles = {
 
 class Form extends React.Component {
   render() {
-    const { classes, data, handleChange, handleSubmit } = this.props;
-
+    const {
+      classes,
+      data,
+      handleChange,
+      handleSubmit,
+      handleDateChange,
+    } = this.props;
     return (
       <div className={classes.root}>
         <form
@@ -74,15 +86,19 @@ class Form extends React.Component {
             onChange={handleChange}
             value={data.fundingGoal}
           />
-          <TextField
-            className={classes.formField}
-            label="Days to Expiration"
-            name="daysUntilExpiration"
-            color="primary"
-            type="number"
-            onChange={handleChange}
-            value={data.daysUntilExpiration}
-          />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDateTimePicker
+              variant="inline"
+              label="Set a Deadline"
+              value={data.selectedDeadline}
+              onChange={handleDateChange}
+              onError={console.log}
+              disablePast
+              format="MM/dd/yyyy hh:mm a"
+              minDate={new Date()}
+            />
+          </MuiPickersUtilsProvider>
+
           <Button
             className={classes.button}
             variant="contained"
