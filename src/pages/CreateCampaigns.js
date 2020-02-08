@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React from 'react';
 import Form from '../components/form';
 import { crowdfunding, campaign } from '../config';

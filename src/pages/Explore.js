@@ -1,21 +1,21 @@
-/*eslint-disable*/
 import React from 'react';
+import { Link } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
 import styles from './Explore.module.css';
-import { Link } from 'react-router-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const getFilteredList = (arr, input) => {
   if (input === '') return [];
-  let len = input.length;
+  const len = input.length;
+  // filter by address, campaign title or name of campaign creator
   return arr.filter(element => {
     if (
       element.address.substring(0, len) === input ||
-      element.campaignTitle.substring(0, len) === input ||
-      element.campaignStarter.substring(0, len) === input
+      element.campaignTitle.substring(0, len) === input
     )
       return element;
+    return null;
   });
 };
 
@@ -96,13 +96,15 @@ class Explore extends React.Component {
   };
 
   handleChange = e => {
+    const { campaigns } = this.state;
     const input = e.target.value;
-    const searchResults = getFilteredList(this.state.campaigns, input);
+    const searchResults = getFilteredList(campaigns, input);
     this.setState({ searchInput: input, searchResults });
   };
 
   renderSearchResults = () => {
-    return this.state.searchResults.map(element => {
+    const { searchResults } = this.state;
+    return searchResults.map(element => {
       return (
         <div key={element.address}>
           <Link to={`/campaigns/${element.address}`}>
@@ -117,9 +119,10 @@ class Explore extends React.Component {
   };
 
   render() {
+    const { searchInput, searchResults, loading } = this.state;
     return (
       <div>
-        {this.state.loading ? (
+        {loading ? (
           <CircularProgress />
         ) : (
           <div>
@@ -128,13 +131,11 @@ class Explore extends React.Component {
                 type="text"
                 placeholder="Search Campaigns..."
                 onChange={this.handleChange}
-                value={this.state.searchInput}
+                value={searchInput}
               />
             </form>
             <div>
-              {this.state.searchResults.length > 0
-                ? this.renderSearchResults()
-                : null}
+              {searchResults.length > 0 ? this.renderSearchResults() : null}
             </div>
             <div className={styles.cardContainer}>
               {this.showAllCampaigns()}
