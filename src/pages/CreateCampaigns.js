@@ -10,7 +10,7 @@ class CreateCampaign extends React.Component {
         title: '',
         description: '',
         fundingGoal: '',
-        selectedDeadline: new Date(),
+        selectedDeadline: new Date().setSeconds(0),
       },
     };
   }

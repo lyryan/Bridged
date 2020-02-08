@@ -157,7 +157,7 @@ class Campaign extends React.Component {
               type="button"
               className={styles.button}
               disabled={campaignDetails.currentState !== 2}
-              onClick={this.getRefund()}
+              onClick={this.getRefund}
             >
               Get Refund
             </button>
