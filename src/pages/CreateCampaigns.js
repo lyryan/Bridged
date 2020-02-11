@@ -65,7 +65,14 @@ class CreateCampaign extends React.Component {
     const { account, web3, ipfs } = this.props;
 
     return (
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
         <Form
           data={formData}
           handleChange={this.handleChange}

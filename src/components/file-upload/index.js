@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { storage } from '../../config';
+import styles from './index.module.css';
 
 class FileUpload extends React.Component {
   constructor(props) {
@@ -9,16 +10,26 @@ class FileUpload extends React.Component {
       ipfsHash: null,
       buffer: '',
       transactionHash: '',
+      imgSrc: null,
     };
   }
 
   processFile = e => {
     e.preventDefault();
     e.stopPropagation();
+    this.setState({
+      imgSrc: URL.createObjectURL(e.target.files[0]),
+    });
     const file = e.target.files[0];
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(file);
     reader.onloadend = () => this.convertToBuffer(reader);
+  };
+
+  handleImg = e => {
+    this.setState({
+      imgSrc: URL.createObjectURL(e.target.files[0]),
+    });
   };
 
   convertToBuffer = async reader => {
@@ -51,6 +62,7 @@ class FileUpload extends React.Component {
     return (
       <div>
         <h4> Image Upload: </h4>
+        <img className={styles.image} src={this.state.imgSrc} />
         <form onSubmit={this.onSubmit}>
           <input type="file" onChange={this.processFile} />
           <button type="submit"> Upload </button>
