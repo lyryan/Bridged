@@ -1,5 +1,6 @@
 import crowdfundingJson from '../truffle/build/contracts/Crowdfunding.json';
 import campaignJson from '../truffle/build/contracts/Campaign.json';
+import storageJson from '../truffle/build/contracts/Storage.json';
 
 const getCrowdfundingAddress = () => {
   const json = JSON.stringify(crowdfundingJson);
@@ -16,6 +17,16 @@ const getCampaignABI = () => {
   return JSON.parse(json).abi;
 };
 
+const getStorageABI = () => {
+  const json = JSON.stringify(storageJson);
+  return JSON.parse(json).abi;
+};
+
+const getStorageAddress = () => {
+  const json = JSON.stringify(storageJson);
+  return JSON.parse(json).networks[5777].address;
+};
+
 export const crowdfunding = {
   ADDRESS: getCrowdfundingAddress(),
   ABI: getCrowdfundingABI(),
@@ -23,4 +34,9 @@ export const crowdfunding = {
 
 export const campaign = {
   ABI: getCampaignABI(),
+};
+
+export const storage = {
+  ADDRESS: getStorageAddress(),
+  ABI: getStorageABI(),
 };

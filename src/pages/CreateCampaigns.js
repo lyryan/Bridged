@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from '../components/form';
 import { crowdfunding, campaign } from '../config';
+import FileUpload from '../components/file-upload';
 
 class CreateCampaign extends React.Component {
   constructor(props) {
@@ -61,6 +62,7 @@ class CreateCampaign extends React.Component {
 
   render() {
     const { formData } = this.state;
+    const { account, web3, ipfs } = this.props;
 
     return (
       <div>
@@ -68,7 +70,8 @@ class CreateCampaign extends React.Component {
           data={formData}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
-        />{' '}
+        />
+        <FileUpload account={account} web3={web3} ipfs={ipfs} />
       </div>
     );
   }
