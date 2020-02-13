@@ -1,8 +1,9 @@
+/*eslint-disable*/
 import React from 'react';
 import { campaign } from '../config';
 import styles from './Campaign.module.css';
 
-const CAMPAIGN_STATE = ['Fundraising', 'Successful', 'Expired'];
+const CAMPAIGN_STATE = ['Fundraising', 'Expired', 'Successful'];
 
 class Campaign extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class Campaign extends React.Component {
         campaignTitle: '',
         deadline: '',
         currentAmount: '',
-        currentState: 0,
+        currentState: null,
         goalAmount: '',
         contract: {},
         address: '',
@@ -40,10 +41,12 @@ class Campaign extends React.Component {
   getRefund = () => {
     const { account } = this.props;
     const { campaignDetails } = this.state;
-    if (campaignDetails.currentState !== 2) {
+
+    if (campaignDetails.currentState !== 1) {
       console.log('state must be expired in order to receive funds');
       return;
     }
+
     campaignDetails.contract.methods.getRefund().send({
       from: account,
     });
@@ -69,6 +72,7 @@ class Campaign extends React.Component {
       campaignDetails.currentAmount,
       'ether',
     );
+    campaignDetails.currentState = parseInt(campaignDetails.currentState);
     this.setState({ campaignDetails });
   };
 
@@ -156,8 +160,8 @@ class Campaign extends React.Component {
             <button
               type="button"
               className={styles.button}
-              disabled={campaignDetails.currentState !== 2}
               onClick={this.getRefund}
+              disabled={campaignDetails.currentState !== 1}
             >
               Get Refund
             </button>
