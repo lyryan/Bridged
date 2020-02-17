@@ -3,7 +3,7 @@ import React from 'react';
 import { campaign } from '../config';
 import styles from './Campaign.module.css';
 
-const CAMPAIGN_STATE = ['Fundraising', 'Successful', 'Expired'];
+const CAMPAIGN_STATE = ['Fundraising', 'Expired', 'Successful'];
 
 class Campaign extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class Campaign extends React.Component {
         campaignTitle: '',
         deadline: '',
         currentAmount: '',
-        currentState: 0,
+        currentState: null,
         goalAmount: '',
         contract: {},
         address: '',
@@ -39,7 +39,7 @@ class Campaign extends React.Component {
   }
 
   getRefund = () => {
-    if (this.state.campaignDetails.currentState !== 2) {
+    if (this.state.campaignDetails.currentState !== 1) {
       console.log('state must be expired in order to receive funds');
       return;
     }
@@ -68,6 +68,7 @@ class Campaign extends React.Component {
       campaignDetails.currentAmount,
       'ether',
     );
+    campaignDetails.currentState = parseInt(campaignDetails.currentState);
     this.setState({ campaignDetails });
   };
 
@@ -157,7 +158,7 @@ class Campaign extends React.Component {
             <button
               type="button"
               className={styles.button}
-              disabled={campaignDetails.currentState !== 2}
+              disabled={campaignDetails.currentState !== 1}
               onClick={this.getRefund()}
             >
               Get Refund

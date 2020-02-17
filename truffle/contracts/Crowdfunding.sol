@@ -20,7 +20,8 @@ contract Crowdfunding {
         string campaignTitle,
         string campaignDesc,
         uint256 deadline,
-        uint256 goalAmount
+        uint256 goalAmount,
+        string photoHash
     );
 
     /** @dev Function to start a new campaign.
@@ -33,7 +34,8 @@ contract Crowdfunding {
         string calldata title,
         string calldata description,
         uint256 durationInDays,
-        uint256 goalAmount
+        uint256 goalAmount,
+        string calldata photoHash
     ) external {
         uint256 deadline = now.add(durationInDays.mul(1 days));
         Campaign newCampaign = new Campaign(
@@ -41,7 +43,8 @@ contract Crowdfunding {
             title,
             description,
             deadline,
-            goalAmount
+            goalAmount,
+            photoHash
         );
         campaigns.push(newCampaign);
         emit CampaignCreated(
@@ -50,7 +53,8 @@ contract Crowdfunding {
             title,
             description,
             deadline,
-            goalAmount
+            goalAmount,
+            photoHash
         );
     }
 

@@ -1,7 +1,7 @@
+/* eslint-disable */
 import React from 'react';
 import Form from '../components/form';
 import { crowdfunding, campaign } from '../config';
-import FileUpload from '../components/file-upload';
 
 class CreateCampaign extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class CreateCampaign extends React.Component {
         fundingGoal: '',
         daysUntilExpiration: '',
       },
+      buffer: '',
     };
   }
 
@@ -29,9 +30,20 @@ class CreateCampaign extends React.Component {
     this.startCampaign();
   };
 
+  pushToIPFS = e => {
+    const { ipfs } = this.props;
+    return new Promise((resolve, reject) => {
+      ipfs.add(this.state.buffer, (err, ipfsHash) => {
+        resolve(ipfsHash[0].hash);
+      });
+    });
+  };
+
   startCampaign = async () => {
     const { web3, account } = this.props;
     const { formData } = this.state;
+
+    const ipfsHash = await this.pushToIPFS();
 
     const crowdfundInstance = new web3.eth.Contract(
       crowdfunding.ABI,
@@ -44,6 +56,7 @@ class CreateCampaign extends React.Component {
         formData.description,
         formData.daysUntilExpiration,
         web3.utils.toWei(formData.fundingGoal, 'ether'),
+        ipfsHash,
       )
       .send({
         from: account,
@@ -62,8 +75,6 @@ class CreateCampaign extends React.Component {
 
   render() {
     const { formData } = this.state;
-    const { account, web3, ipfs } = this.props;
-
     return (
       <div
         style={{
@@ -73,12 +84,14 @@ class CreateCampaign extends React.Component {
           flexDirection: 'row',
         }}
       >
-        <Form
-          data={formData}
-          handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit}
-        />
-        <FileUpload account={account} web3={web3} ipfs={ipfs} />
+        <div>
+          <Form
+            data={formData}
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}
+            setBuffer={buffer => this.setState({ buffer })}
+          />
+        </div>
       </div>
     );
   }
