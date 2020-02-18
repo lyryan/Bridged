@@ -72,7 +72,7 @@ contract Campaign {
     /** @dev Function to change the campaign state depending on conditions.
       */
     function checkIfFundingCompleteOrExpired() public {
-        if (currentBalance >= amountGoal) {
+        if (now > raiseBy && currentBalance >= amountGoal) {
             state = State.Successful;
             payOut();
         } else if (now > raiseBy) {
