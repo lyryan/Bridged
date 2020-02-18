@@ -84,6 +84,7 @@ class Explore extends React.Component {
       return (
         <Card
           key={el.address}
+          campaignHash={el._photoHash}
           campaignTitle={el.campaignTitle}
           campaignDesc={el.campaignDesc}
           campaignCreator={el.campaignStarter}

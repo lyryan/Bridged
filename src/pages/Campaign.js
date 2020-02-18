@@ -19,6 +19,7 @@ class Campaign extends React.Component {
         goalAmount: '',
         contract: {},
         address: '',
+        _photoHash: '',
       },
       fundAmount: 0,
     };
@@ -120,12 +121,12 @@ class Campaign extends React.Component {
     return (
       <>
         <div className={styles.container}>
-          <div className={styles.itemContainer}>
+          <div>
             <div className={styles.item}>
               State: {CAMPAIGN_STATE[campaignDetails.currentState]}
             </div>
             <div className={styles.item}>
-              Campaign Title: {campaignDetails.campaignTitle}{' '}
+              Campaign Title: {campaignDetails.campaignTitle}
             </div>
             <div className={styles.item}>
               Campaign Description: {campaignDetails.campaignDesc}
@@ -166,9 +167,13 @@ class Campaign extends React.Component {
               Get Refund
             </button>
           </div>
-          <div className={styles.itemImage}>Image</div>
+          <div className={styles.itemImage}>
+            <img
+              alt="campaign"
+              src={`https://ipfs.io/ipfs/${campaignDetails._photoHash}`}
+            />
+          </div>
         </div>
-        <div>Campaign Info</div>
       </>
     );
   }

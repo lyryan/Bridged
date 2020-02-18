@@ -4,6 +4,7 @@ import styles from './index.module.css';
 
 const Card = props => {
   const {
+    campaignHash,
     campaignTitle,
     campaignDesc,
     campaignCreator,
@@ -27,7 +28,9 @@ const Card = props => {
 
   return (
     <div className={styles.card}>
-      <div className={styles.campaignImage} />
+      <div className={styles.campaignImage}>
+        <img alt="campaign" src={`https://ipfs.io/ipfs/${campaignHash}`} />
+      </div>
       <div>Campaign: {campaignTitle}</div>
       <div>Description: {campaignDesc}</div>
       <div className={styles.campaignCreator}>

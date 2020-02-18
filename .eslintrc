@@ -8,7 +8,8 @@
     "import/no-unresolved": "off",
     "react/prop-types": "off",
     "react/forbid-prop-types": "off",
-    "react/prefer-stateless-function": [0, { "ignorePureComponents": true }]
+    "react/prefer-stateless-function": [0, { "ignorePureComponents": true }],
+    "no-underscore-dangle": 0
   },
   "parser": "babel-eslint",
   "env": {
