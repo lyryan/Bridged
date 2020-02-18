@@ -39,12 +39,16 @@ class Campaign extends React.Component {
   }
 
   getRefund = () => {
-    if (this.state.campaignDetails.currentState !== 1) {
+    const { account } = this.props;
+    const { campaignDetails } = this.state;
+
+    if (campaignDetails.currentState !== 1) {
       console.log('state must be expired in order to receive funds');
       return;
     }
-    this.state.campaignDetails.contract.methods.getRefund().send({
-      from: this.props.account,
+
+    campaignDetails.contract.methods.getRefund().send({
+      from: account,
     });
   };
 
@@ -73,17 +77,19 @@ class Campaign extends React.Component {
   };
 
   fundCampaign = () => {
-    if (!this.state.fundAmount) {
+    const { account, web3 } = this.props;
+    const { fundAmount, campaignDetails } = this.state;
+    if (!fundAmount) {
       return;
     }
 
-    const campaignContract = this.state.campaignDetails.contract;
+    const campaignContract = campaignDetails.contract;
 
     campaignContract.methods
       .contribute()
       .send({
-        from: this.props.account,
-        value: this.props.web3.utils.toWei(this.state.fundAmount, 'ether'),
+        from: account,
+        value: web3.utils.toWei(fundAmount, 'ether'),
       })
       .then(res => {
         console.log('sending funds promise, thhis is the return value', res);
@@ -91,20 +97,15 @@ class Campaign extends React.Component {
           res.events.FundingReceived.returnValues.currentTotal,
           10,
         );
-        const campaignGoal = parseInt(
-          this.state.campaignDetails.goalAmount,
-          10,
-        );
-        this.state.campaignDetails.currentAmount = newTotal;
+        const campaignGoal = parseInt(campaignDetails.goalAmount, 10);
+        campaignDetails.currentAmount = newTotal;
 
         // Set project state to success
         if (newTotal >= campaignGoal) {
-          this.state.campaignDetails.currentState = 1;
+          campaignDetails.currentState = 1;
         }
       });
   };
-
-  getRefund = () => {};
 
   handleChange = e => {
     e.preventDefault();
@@ -114,7 +115,8 @@ class Campaign extends React.Component {
   };
 
   render() {
-    const { campaignDetails } = this.state;
+    const { campaignDetails, fundAmount } = this.state;
+    console.log(this.state);
     return (
       <>
         <div className={styles.container}>
@@ -143,7 +145,7 @@ class Campaign extends React.Component {
             <div>
               <input
                 type="number"
-                value={this.state.fundAmount}
+                value={fundAmount}
                 onChange={this.handleChange}
                 name="fundAmount"
               />
@@ -158,8 +160,8 @@ class Campaign extends React.Component {
             <button
               type="button"
               className={styles.button}
+              onClick={this.getRefund}
               disabled={campaignDetails.currentState !== 1}
-              onClick={this.getRefund()}
             >
               Get Refund
             </button>

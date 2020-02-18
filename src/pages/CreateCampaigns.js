@@ -11,7 +11,7 @@ class CreateCampaign extends React.Component {
         title: '',
         description: '',
         fundingGoal: '',
-        daysUntilExpiration: '',
+        selectedDeadline: new Date().setSeconds(0),
       },
       buffer: '',
     };
@@ -22,6 +22,13 @@ class CreateCampaign extends React.Component {
     const newData = { ...formData };
     const [field, value] = [e.target.name, e.target.value];
     newData[field] = value;
+    this.setState({ formData: newData });
+  };
+
+  handleDateChange = date => {
+    const { formData } = this.state;
+    const newData = { ...formData };
+    newData.selectedDeadline = date;
     this.setState({ formData: newData });
   };
 
@@ -54,7 +61,7 @@ class CreateCampaign extends React.Component {
       .startCampaign(
         formData.title,
         formData.description,
-        formData.daysUntilExpiration,
+        Date.parse(formData.selectedDeadline) / 1000,
         web3.utils.toWei(formData.fundingGoal, 'ether'),
         ipfsHash,
       )
@@ -90,6 +97,7 @@ class CreateCampaign extends React.Component {
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
             setBuffer={buffer => this.setState({ buffer })}
+            handleDateChange={this.handleDateChange}
           />
         </div>
       </div>
