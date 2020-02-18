@@ -3,7 +3,7 @@ import React from 'react';
 import { campaign } from '../config';
 import styles from './Campaign.module.css';
 
-const CAMPAIGN_STATE = ['Fundraising', 'Successful', 'Expired'];
+const CAMPAIGN_STATE = ['Fundraising', 'Expired', 'Successful'];
 
 class Campaign extends React.Component {
   constructor(props) {
@@ -15,10 +15,11 @@ class Campaign extends React.Component {
         campaignTitle: '',
         deadline: '',
         currentAmount: '',
-        currentState: 0,
+        currentState: null,
         goalAmount: '',
         contract: {},
         address: '',
+        _photoHash: '',
       },
       fundAmount: 0,
     };
@@ -39,12 +40,16 @@ class Campaign extends React.Component {
   }
 
   getRefund = () => {
-    if (this.state.campaignDetails.currentState !== 2) {
+    const { account } = this.props;
+    const { campaignDetails } = this.state;
+
+    if (campaignDetails.currentState !== 1) {
       console.log('state must be expired in order to receive funds');
       return;
     }
-    this.state.campaignDetails.contract.methods.getRefund().send({
-      from: this.props.account,
+
+    campaignDetails.contract.methods.getRefund().send({
+      from: account,
     });
   };
 
@@ -68,21 +73,24 @@ class Campaign extends React.Component {
       campaignDetails.currentAmount,
       'ether',
     );
+    campaignDetails.currentState = parseInt(campaignDetails.currentState);
     this.setState({ campaignDetails });
   };
 
   fundCampaign = () => {
-    if (!this.state.fundAmount) {
+    const { account, web3 } = this.props;
+    const { fundAmount, campaignDetails } = this.state;
+    if (!fundAmount) {
       return;
     }
 
-    const campaignContract = this.state.campaignDetails.contract;
+    const campaignContract = campaignDetails.contract;
 
     campaignContract.methods
       .contribute()
       .send({
-        from: this.props.account,
-        value: this.props.web3.utils.toWei(this.state.fundAmount, 'ether'),
+        from: account,
+        value: web3.utils.toWei(fundAmount, 'ether'),
       })
       .then(res => {
         console.log('sending funds promise, thhis is the return value', res);
@@ -90,20 +98,15 @@ class Campaign extends React.Component {
           res.events.FundingReceived.returnValues.currentTotal,
           10,
         );
-        const campaignGoal = parseInt(
-          this.state.campaignDetails.goalAmount,
-          10,
-        );
-        this.state.campaignDetails.currentAmount = newTotal;
+        const campaignGoal = parseInt(campaignDetails.goalAmount, 10);
+        campaignDetails.currentAmount = newTotal;
 
         // Set project state to success
         if (newTotal >= campaignGoal) {
-          this.state.campaignDetails.currentState = 1;
+          campaignDetails.currentState = 1;
         }
       });
   };
-
-  getRefund = () => {};
 
   handleChange = e => {
     e.preventDefault();
@@ -113,16 +116,17 @@ class Campaign extends React.Component {
   };
 
   render() {
-    const { campaignDetails } = this.state;
+    const { campaignDetails, fundAmount } = this.state;
+    console.log(this.state);
     return (
       <>
         <div className={styles.container}>
-          <div className={styles.itemContainer}>
+          <div>
             <div className={styles.item}>
               State: {CAMPAIGN_STATE[campaignDetails.currentState]}
             </div>
             <div className={styles.item}>
-              Campaign Title: {campaignDetails.campaignTitle}{' '}
+              Campaign Title: {campaignDetails.campaignTitle}
             </div>
             <div className={styles.item}>
               Campaign Description: {campaignDetails.campaignDesc}
@@ -142,7 +146,7 @@ class Campaign extends React.Component {
             <div>
               <input
                 type="number"
-                value={this.state.fundAmount}
+                value={fundAmount}
                 onChange={this.handleChange}
                 name="fundAmount"
               />
@@ -157,15 +161,19 @@ class Campaign extends React.Component {
             <button
               type="button"
               className={styles.button}
-              disabled={campaignDetails.currentState !== 2}
-              onClick={this.getRefund()}
+              onClick={this.getRefund}
+              disabled={campaignDetails.currentState !== 1}
             >
               Get Refund
             </button>
           </div>
-          <div className={styles.itemImage}>Image</div>
+          <div className={styles.itemImage}>
+            <img
+              alt="campaign"
+              src={`https://ipfs.io/ipfs/${campaignDetails._photoHash}`}
+            />
+          </div>
         </div>
-        <div>Campaign Info</div>
       </>
     );
   }

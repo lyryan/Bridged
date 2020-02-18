@@ -23,6 +23,7 @@ contract Campaign {
     uint256 public raiseBy;
     string public title;
     string public description;
+    string public photoHash;
     State public state = State.Fundraising; // initialize on create
     mapping(address => uint256) public contributions;
 
@@ -46,7 +47,8 @@ contract Campaign {
         string memory campaignTitle,
         string memory campaignDesc,
         uint256 fundRaisingDeadline,
-        uint256 goalAmount
+        uint256 goalAmount,
+        string memory _photoHash
     ) public {
         creator = campaignStarter;
         title = campaignTitle;
@@ -54,6 +56,7 @@ contract Campaign {
         amountGoal = goalAmount;
         raiseBy = fundRaisingDeadline;
         currentBalance = 0;
+        photoHash = _photoHash;
     }
 
     /** @dev Function to fund a certain campaign.
@@ -69,7 +72,7 @@ contract Campaign {
     /** @dev Function to change the campaign state depending on conditions.
       */
     function checkIfFundingCompleteOrExpired() public {
-        if (currentBalance >= amountGoal) {
+        if (now > raiseBy && currentBalance >= amountGoal) {
             state = State.Successful;
             payOut();
         } else if (now > raiseBy) {
@@ -125,7 +128,8 @@ contract Campaign {
             uint256 deadline,
             State currentState,
             uint256 currentAmount,
-            uint256 goalAmount
+            uint256 goalAmount,
+            string memory _photoHash
         )
     {
         campaignStarter = creator;
@@ -135,5 +139,6 @@ contract Campaign {
         currentState = state;
         currentAmount = currentBalance;
         goalAmount = amountGoal;
+        _photoHash = photoHash;
     }
 }

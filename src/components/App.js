@@ -2,6 +2,7 @@ import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import Fortmatic from 'fortmatic';
 import Web3 from 'web3';
+import Ipfs from 'ipfs-api';
 
 import Header from './header';
 
@@ -20,7 +21,7 @@ class App extends React.Component {
       account: '',
       email: '',
       balance: '',
-
+      ipfs: null,
       web3: null,
     };
   }
@@ -28,8 +29,13 @@ class App extends React.Component {
   componentDidMount = async () => {
     console.log(fm.getProvider());
     const web3 = await new Web3(fm.getProvider());
+    const ipfs = new Ipfs({
+      host: 'ipfs.infura.io',
+      port: 5001,
+      protocol: 'https',
+    });
 
-    await this.setState({ web3 });
+    await this.setState({ web3, ipfs });
 
     const isUserLoggedIn = await fm.user.isLoggedIn();
     if (isUserLoggedIn) {
@@ -76,7 +82,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { isLoggedIn, account, balance, email, web3 } = this.state;
+    const { isLoggedIn, account, balance, email, web3, ipfs } = this.state;
     return (
       <>
         <Header
@@ -89,6 +95,7 @@ class App extends React.Component {
             this.logout();
           }}
           web3={web3}
+          ipfs={ipfs}
         />
         <div>
           <div>

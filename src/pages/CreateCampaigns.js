@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import Form from '../components/form';
 import { crowdfunding, campaign } from '../config';
@@ -10,8 +11,9 @@ class CreateCampaign extends React.Component {
         title: '',
         description: '',
         fundingGoal: '',
-        daysUntilExpiration: '',
+        selectedDeadline: new Date().setSeconds(0),
       },
+      buffer: '',
     };
   }
 
@@ -23,14 +25,32 @@ class CreateCampaign extends React.Component {
     this.setState({ formData: newData });
   };
 
+  handleDateChange = date => {
+    const { formData } = this.state;
+    const newData = { ...formData };
+    newData.selectedDeadline = date;
+    this.setState({ formData: newData });
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     this.startCampaign();
   };
 
+  pushToIPFS = e => {
+    const { ipfs } = this.props;
+    return new Promise((resolve, reject) => {
+      ipfs.add(this.state.buffer, (err, ipfsHash) => {
+        resolve(ipfsHash[0].hash);
+      });
+    });
+  };
+
   startCampaign = async () => {
     const { web3, account } = this.props;
     const { formData } = this.state;
+
+    const ipfsHash = await this.pushToIPFS();
 
     const crowdfundInstance = new web3.eth.Contract(
       crowdfunding.ABI,
@@ -41,8 +61,9 @@ class CreateCampaign extends React.Component {
       .startCampaign(
         formData.title,
         formData.description,
-        formData.daysUntilExpiration,
+        Date.parse(formData.selectedDeadline) / 1000,
         web3.utils.toWei(formData.fundingGoal, 'ether'),
+        ipfsHash,
       )
       .send({
         from: account,
@@ -61,14 +82,24 @@ class CreateCampaign extends React.Component {
 
   render() {
     const { formData } = this.state;
-
     return (
-      <div>
-        <Form
-          data={formData}
-          handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit}
-        />{' '}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+        <div>
+          <Form
+            data={formData}
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}
+            setBuffer={buffer => this.setState({ buffer })}
+            handleDateChange={this.handleDateChange}
+          />
+        </div>
       </div>
     );
   }
