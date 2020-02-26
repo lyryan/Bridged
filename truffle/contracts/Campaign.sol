@@ -20,6 +20,7 @@ contract Campaign {
     address payable public creator;
     uint256 public amountGoal; // required to reach at least this much, else everyone gets refund
     uint256 public currentBalance;
+    uint256 public accumulatedTotal;
     uint256 public raiseBy;
     string public title;
     string public description;
@@ -31,7 +32,8 @@ contract Campaign {
     event FundingReceived(
         address contributor,
         uint256 amount,
-        uint256 currentTotal
+        uint256 totalFunded,
+        State currentState
     );
     // Event that will be emitted whenever the campaign starter has received the funds
     event CreatorPaid(address recipient);
@@ -56,6 +58,7 @@ contract Campaign {
         amountGoal = goalAmount;
         raiseBy = fundRaisingDeadline;
         currentBalance = 0;
+        accumulatedTotal = 0;
         photoHash = _photoHash;
     }
 
@@ -65,19 +68,14 @@ contract Campaign {
         require(msg.sender != creator);
         contributions[msg.sender] = contributions[msg.sender].add(msg.value);
         currentBalance = currentBalance.add(msg.value);
-        emit FundingReceived(msg.sender, msg.value, currentBalance);
-        checkIfFundingCompleteOrExpired();
-    }
-
-    /** @dev Function to change the campaign state depending on conditions.
-      */
-    function checkIfFundingCompleteOrExpired() public {
+        accumulatedTotal = currentBalance;
         if (now > raiseBy && currentBalance >= amountGoal) {
             state = State.Successful;
             payOut();
         } else if (now > raiseBy) {
             state = State.Expired;
         }
+        emit FundingReceived(msg.sender, msg.value, accumulatedTotal, state);
     }
 
     /** @dev Function to give the received funds to campaign starter.
@@ -128,6 +126,7 @@ contract Campaign {
             uint256 deadline,
             State currentState,
             uint256 currentAmount,
+            uint256 totalFunded,
             uint256 goalAmount,
             string memory _photoHash
         )
@@ -138,6 +137,7 @@ contract Campaign {
         deadline = raiseBy;
         currentState = state;
         currentAmount = currentBalance;
+        totalFunded = accumulatedTotal;
         goalAmount = amountGoal;
         _photoHash = photoHash;
     }
