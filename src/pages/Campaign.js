@@ -2,6 +2,20 @@
 import React from 'react';
 import { campaign } from '../config';
 import styles from './Campaign.module.css';
+import { lighten, withStyles } from '@material-ui/core/styles';
+
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+const BorderLinearProgress = withStyles({
+  root: {
+    height: 10,
+    backgroundColor: lighten('#6ca880', 0.5),
+  },
+  bar: {
+    borderRadius: 20,
+    backgroundColor: '#6ca880',
+  },
+})(LinearProgress);
 
 const CAMPAIGN_STATE = ['Fundraising', 'Expired', 'Successful'];
 
@@ -15,6 +29,7 @@ class Campaign extends React.Component {
         campaignTitle: '',
         deadline: '',
         currentAmount: '',
+        totalFunded: '',
         currentState: null,
         goalAmount: '',
         contract: {},
@@ -73,6 +88,10 @@ class Campaign extends React.Component {
       campaignDetails.currentAmount,
       'ether',
     );
+    campaignDetails.totalFunded = web3.utils.fromWei(
+      campaignDetails.totalFunded,
+      'ether',
+    );
     campaignDetails.currentState = parseInt(campaignDetails.currentState);
     this.setState({ campaignDetails });
   };
@@ -93,18 +112,24 @@ class Campaign extends React.Component {
         value: web3.utils.toWei(fundAmount, 'ether'),
       })
       .then(res => {
-        console.log('sending funds promise, thhis is the return value', res);
-        const newTotal = parseInt(
-          res.events.FundingReceived.returnValues.currentTotal,
-          10,
+        // get the new total
+        const newTotal = web3.utils.fromWei(
+          res.events.FundingReceived.returnValues.totalFunded,
+          'ether',
         );
-        const campaignGoal = parseInt(campaignDetails.goalAmount, 10);
-        campaignDetails.currentAmount = newTotal;
 
-        // Set project state to success
-        if (newTotal >= campaignGoal) {
-          campaignDetails.currentState = 1;
-        }
+        // get the new state
+        const newState = parseInt(
+          res.events.FundingReceived.returnValues.currentState,
+        );
+
+        const { campaignDetails } = this.state;
+        const newCampaignDetails = { ...campaignDetails };
+        newCampaignDetails.currentState = newState;
+        newCampaignDetails.totalFunded = newTotal;
+        console.log('this is the new campaign details', newCampaignDetails);
+
+        this.setState({ campaignDetails: newCampaignDetails });
       });
   };
 
@@ -141,8 +166,18 @@ class Campaign extends React.Component {
               Funding Goal: {campaignDetails.goalAmount}
             </div>
             <div className={styles.item}>
-              Current Amount: {campaignDetails.currentAmount}
+              Total Funds: {campaignDetails.totalFunded}
             </div>
+            <BorderLinearProgress
+              variant="determinate"
+              color="secondary"
+              value={
+                campaignDetails.totalFunded / campaignDetails.goalAmount > 1
+                  ? 100
+                  : (campaignDetails.totalFunded / campaignDetails.goalAmount) *
+                    100
+              }
+            />
             <div>
               <input
                 type="number"
@@ -155,6 +190,7 @@ class Campaign extends React.Component {
               type="button"
               className={styles.button}
               onClick={this.fundCampaign}
+              disabled={campaignDetails.currentState !== 0}
             >
               Contribute
             </button>
