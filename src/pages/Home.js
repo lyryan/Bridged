@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import Item from 'react-bootstrap/CarouselItem';
+import { Link } from 'react-router-dom';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
 import styles from './Home.module.css';
@@ -60,7 +60,6 @@ class Home extends React.Component {
           const len = campaigns.length;
           campaigns.splice(0, len - 6);
         }
-        console.log('the new length is', campaigns.length);
         this.setState({ campaigns });
       });
     // this.setState({ loading: false });
@@ -82,7 +81,6 @@ class Home extends React.Component {
         const options = { dateStyle: 'full' };
         const expiryDate = new Date(el.deadline * 1000).toLocaleString(options); // convert to local time
         const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
-        console.log('this is the info', el);
         item.push(
           <Card
             key={el.address}
@@ -106,7 +104,6 @@ class Home extends React.Component {
       j = 0;
       i++;
     }
-    console.log('these are the featured campaigns', featuredCampaigns);
 
     return featuredCampaigns;
   };
@@ -119,18 +116,28 @@ class Home extends React.Component {
             <img src={handsIcon} alt="" />
           </span>
           <span className={styles.col}>
-            <h1>Tired of campaigns failing and not delivering as promised?</h1>
+            <h1>Tired of campaigns not delivering as promised?</h1>
             <p>
-              Bridged is a socially driven crowdfunding platform that's built on
-              the Ethereum blockchain. No more failed deliver reward promises
+              Bridged is a socially-driven crowdfunding platform built on the
+              Ethereum blockchain, offering more control to the masses and less
+              worry over undelivered promises.
             </p>
-            <button>Get started</button>
+            <Link style={{ textDecoration: 'none' }} to="/create-campaign">
+              <button>Get Started</button>
+            </Link>
           </span>
         </div>
 
-        <div className={styles.bottom}>
+        <div className={styles.middle}>
           <h3>Featured Campaigns</h3>
           <Carousel>{this.renderCards()}</Carousel>
+        </div>
+
+        <div className={styles.bottom}>
+          <h3>Discover more campaigns on Bridged.</h3>
+          <Link style={{ textDecoration: 'none' }} to="/explore">
+            <button>View More</button>
+          </Link>
         </div>
       </div>
     );
