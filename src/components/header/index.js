@@ -22,6 +22,7 @@ import Logo from '../../svg/logo-black.svg';
 import CreateCampaigns from '../../pages/CreateCampaigns';
 import Explore from '../../pages/Explore';
 import Campaign from '../../pages/Campaign';
+import Home from '../../pages/Home';
 
 const useStyles = makeStyles(theme => ({
   colorPrimary: {
@@ -264,6 +265,9 @@ const PrimarySearchAppBar = props => {
         {renderMobileMenu}
         {renderMenu}
         <Switch>
+          <Route exact path="/">
+            <Home web3={web3} />
+          </Route>
           <Route path="/create-campaign">
             <CreateCampaigns account={account} web3={web3} ipfs={ipfs} />
           </Route>
