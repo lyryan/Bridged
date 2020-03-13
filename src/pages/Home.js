@@ -1,12 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
 import styles from './Home.module.css';
 import handsIcon from '../images/landing-header.png';
-import 'react-multi-carousel/lib/styles.css';
 
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+  },
+};
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -90,24 +109,6 @@ class Home extends React.Component {
   };
 
   render() {
-    const responsive = {
-      desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 6,
-        slidesToSlide: 3, // optional, default to 1.
-      },
-      tablet: {
-        breakpoint: { max: 1024, min: 464 },
-        items: 6,
-        slidesToSlide: 2, // optional, default to 1.
-      },
-      mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 6,
-        slidesToSlide: 1, // optional, default to 1.
-      },
-    };
-
     return (
       <div>
         <div className={styles.top}>
@@ -129,18 +130,24 @@ class Home extends React.Component {
 
         <div className={styles.middle}>
           <h3>Featured Campaigns</h3>
-          <Carousel
-            infinite
-            autoPlay
-            autoPlaySpeed={3000}
-            transitionDuration={500}
-            responsive={responsive}
-            draggable
-            itemClass={styles.itemClass}
-            containerClass={styles.containerClass}
-          >
-            {this.renderCards()}
-          </Carousel>
+          <div>
+            <Carousel
+              infinite
+              autoPlay
+              autoPlaySpeed={3000}
+              transitionDuration={500}
+              responsive={responsive}
+              draggable
+              itemClass={styles.itemClass}
+              containerClass={styles.containerClass}
+            >
+              {/* <div>{this.renderCards()}</div> */}
+              <div>Item 1</div>
+              <div>Item 2</div>
+              <div>Item 3</div>
+              <div>Item 4</div>
+            </Carousel>
+          </div>
         </div>
 
         <div className={styles.bottom}>

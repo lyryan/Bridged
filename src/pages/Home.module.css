@@ -101,7 +101,7 @@
 .containerClass {
   height: 400px;
   flex: 2;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
 }
 
 .itemClass {
