@@ -1,11 +1,11 @@
 import React from 'react';
-import Carousel from 'react-bootstrap/Carousel';
 import { Link } from 'react-router-dom';
+import Carousel from 'react-multi-carousel';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
 import styles from './Home.module.css';
 import handsIcon from '../images/landing-header.png';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-multi-carousel/lib/styles.css';
 
 class Home extends React.Component {
   constructor(props) {
@@ -69,21 +69,13 @@ class Home extends React.Component {
     const { web3 } = this.props;
     const { campaigns } = this.state;
 
-    const featuredCampaigns = [];
-
-    let i = 0;
-    let j = 0;
-    let count = 0;
-    while (i < 2 && count < campaigns.length) {
-      const item = [];
-      while (j < 3 && count < campaigns.length) {
-        const el = campaigns[count];
-        const options = { dateStyle: 'full' };
-        const expiryDate = new Date(el.deadline * 1000).toLocaleString(options); // convert to local time
-        const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
-        item.push(
+    return campaigns.map(el => {
+      const options = { dateStyle: 'full' };
+      const expiryDate = new Date(el.deadline * 1000).toLocaleString(options); // convert to local time
+      const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
+      return (
+        <div key={el.address}>
           <Card
-            key={el.address}
             campaignHash={el._photoHash}
             campaignTitle={el.campaignTitle}
             campaignDesc={el.campaignDesc}
@@ -91,24 +83,31 @@ class Home extends React.Component {
             deadline={expiryDate}
             fundingGoal={goalAmount}
             route={`/campaigns/${el.address}`}
-          />,
-        );
-        count += 1;
-        j += 1;
-      }
-      featuredCampaigns.push(
-        <Carousel.Item>
-          <div className={styles.cardContainer}>{item}</div>
-        </Carousel.Item>,
+          />
+        </div>
       );
-      j = 0;
-      i += 1;
-    }
-
-    return featuredCampaigns;
+    });
   };
 
   render() {
+    const responsive = {
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 6,
+        slidesToSlide: 3, // optional, default to 1.
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 6,
+        slidesToSlide: 2, // optional, default to 1.
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 6,
+        slidesToSlide: 1, // optional, default to 1.
+      },
+    };
+
     return (
       <div>
         <div className={styles.top}>
@@ -130,7 +129,18 @@ class Home extends React.Component {
 
         <div className={styles.middle}>
           <h3>Featured Campaigns</h3>
-          <Carousel>{this.renderCards()}</Carousel>
+          <Carousel
+            infinite
+            autoPlay
+            autoPlaySpeed={3000}
+            transitionDuration={500}
+            responsive={responsive}
+            draggable
+            itemClass={styles.itemClass}
+            containerClass={styles.containerClass}
+          >
+            {this.renderCards()}
+          </Carousel>
         </div>
 
         <div className={styles.bottom}>

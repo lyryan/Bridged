@@ -42,19 +42,9 @@
 
 .middle {
   padding-top: 50px;
-  min-height: 580px;
 }
 .middle h3 {
   text-align: center;
-}
-
-.middle .cardContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-  flex-flow: row wrap;
-  height: 440px;
 }
 
 .bottom {
@@ -108,28 +98,14 @@
   }
 }
 
-/* change bootstrap css */
-:global(.carousel-indicators li) {
-  background-color: black;
+.containerClass {
+  height: 400px;
+  flex: 2;
+  justify-content: space-evenly;
 }
 
-:global(.carousel-control-next-icon) {
-  background-image: url('../images/carousel-arrow.png');
-  height: 50px;
-  width: 50px;
-}
-
-:global(.carousel-control-prev-icon) {
-  background-image: url('../images/carousel-arrow.png');
-  height: 50px;
-  width: 50px;
-  transform: rotate(180deg);
-}
-
-:global(.carousel-control-next) {
-  height: 480px;
-}
-
-:global(.carousel-control-prev) {
-  height: 480px;
+.itemClass {
+  display: flex;
+  justify-content: center;
+  width: 400px;
 }
