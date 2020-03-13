@@ -154,10 +154,13 @@ class Campaign extends React.Component {
               Campaign Title: {campaignDetails.campaignTitle}
             </div>
             <div className={styles.item}>
+              Campaign Address: {campaignDetails.address}
+            </div>
+            <div className={styles.item}>
               Campaign Description: {campaignDetails.campaignDesc}
             </div>
             <div className={styles.item}>
-              Campaign Creator: {campaignDetails.campaignStarter}
+              Creator Address: {campaignDetails.campaignStarter}
             </div>
             <div className={styles.item}>
               Days until Expiration: {campaignDetails.deadline}
