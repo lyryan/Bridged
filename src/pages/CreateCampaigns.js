@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import Form from '../components/form';
 import { crowdfunding, campaign } from '../config';
@@ -37,11 +36,13 @@ class CreateCampaign extends React.Component {
     this.startCampaign();
   };
 
-  pushToIPFS = e => {
+  pushToIPFS = () => {
     const { ipfs } = this.props;
     return new Promise((resolve, reject) => {
-      ipfs.add(this.state.buffer, (err, ipfsHash) => {
-        resolve(ipfsHash[0].hash);
+      const { buffer } = this.state;
+      ipfs.add(buffer, (err, ipfsHash) => {
+        if (err) return reject(err);
+        return resolve(ipfsHash[0].hash);
       });
     });
   };

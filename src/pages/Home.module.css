@@ -27,10 +27,6 @@
   cursor: pointer;
 }
 
-.top .col p {
-  font-weight: 300;
-}
-
 .top .col button:hover {
   opacity: 0.7;
 }
@@ -38,6 +34,10 @@
 .top .col img {
   width: 100%;
   height: 100%;
+}
+
+.top .col p {
+  font-weight: 300;
 }
 
 .middle {
@@ -124,4 +124,12 @@
   height: 50px;
   width: 50px;
   transform: rotate(180deg);
+}
+
+:global(.carousel-control-next) {
+  height: 480px;
+}
+
+:global(.carousel-control-prev) {
+  height: 480px;
 }

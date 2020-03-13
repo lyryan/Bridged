@@ -1,10 +1,8 @@
-/*eslint-disable*/
 import React from 'react';
+import { lighten, withStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { campaign } from '../config';
 import styles from './Campaign.module.css';
-import { lighten, withStyles } from '@material-ui/core/styles';
-
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 const BorderLinearProgress = withStyles({
   root: {
@@ -92,7 +90,7 @@ class Campaign extends React.Component {
       campaignDetails.totalFunded,
       'ether',
     );
-    campaignDetails.currentState = parseInt(campaignDetails.currentState);
+    campaignDetails.currentState = parseInt(campaignDetails.currentState, 10);
     this.setState({ campaignDetails });
   };
 
@@ -121,9 +119,9 @@ class Campaign extends React.Component {
         // get the new state
         const newState = parseInt(
           res.events.FundingReceived.returnValues.currentState,
+          10,
         );
 
-        const { campaignDetails } = this.state;
         const newCampaignDetails = { ...campaignDetails };
         newCampaignDetails.currentState = newState;
         newCampaignDetails.totalFunded = newTotal;

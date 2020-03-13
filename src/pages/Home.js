@@ -71,9 +71,9 @@ class Home extends React.Component {
 
     const featuredCampaigns = [];
 
-    let i = 0,
-      j = 0,
-      count = 0;
+    let i = 0;
+    let j = 0;
+    let count = 0;
     while (i < 2 && count < campaigns.length) {
       const item = [];
       while (j < 3 && count < campaigns.length) {
@@ -93,8 +93,8 @@ class Home extends React.Component {
             route={`/campaigns/${el.address}`}
           />,
         );
-        count++;
-        j++;
+        count += 1;
+        j += 1;
       }
       featuredCampaigns.push(
         <Carousel.Item>
@@ -102,7 +102,7 @@ class Home extends React.Component {
         </Carousel.Item>,
       );
       j = 0;
-      i++;
+      i += 1;
     }
 
     return featuredCampaigns;
@@ -123,7 +123,7 @@ class Home extends React.Component {
               worry over undelivered promises.
             </p>
             <Link style={{ textDecoration: 'none' }} to="/create-campaign">
-              <button>Get Started</button>
+              <button type="button">Get Started</button>
             </Link>
           </span>
         </div>
@@ -136,7 +136,7 @@ class Home extends React.Component {
         <div className={styles.bottom}>
           <h3>Discover more campaigns on Bridged.</h3>
           <Link style={{ textDecoration: 'none' }} to="/explore">
-            <button>View More</button>
+            <button type="button">View More</button>
           </Link>
         </div>
       </div>
