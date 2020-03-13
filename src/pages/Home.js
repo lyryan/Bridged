@@ -141,11 +141,7 @@ class Home extends React.Component {
               itemClass={styles.itemClass}
               containerClass={styles.containerClass}
             >
-              {/* <div>{this.renderCards()}</div> */}
-              <div>Item 1</div>
-              <div>Item 2</div>
-              <div>Item 3</div>
-              <div>Item 4</div>
+              {this.renderCards()}
             </Carousel>
           </div>
         </div>
