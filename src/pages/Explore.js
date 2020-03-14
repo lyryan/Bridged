@@ -78,8 +78,8 @@ class Explore extends React.Component {
     const { web3 } = this.props;
     const { campaigns } = this.state;
     return campaigns.map(el => {
-      const options = { dateStyle: 'full' };
-      const expiryDate = new Date(el.deadline * 1000).toLocaleString(options); // convert to local time
+      const todayDate = new Date().toUTCString();
+      const expiryDate = new Date(el.deadline * 1000).toUTCString();
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
       return (
         <Card
@@ -88,12 +88,33 @@ class Explore extends React.Component {
           campaignTitle={el.campaignTitle}
           campaignDesc={el.campaignDesc}
           campaignCreator={el.campaignStarter}
-          deadline={expiryDate}
+          deadline={this.daysBetween(todayDate, expiryDate)}
           fundingGoal={goalAmount}
           route={`/campaigns/${el.address}`}
         />
       );
     });
+  };
+
+  daysBetween = (date1, date2) => {
+    const msPerDay = 1000 * 60 * 60 * 24;
+
+    const todayDate = new Date(date1);
+    const expiryDate = new Date(date2);
+
+    const todayUtc = Date.UTC(
+      todayDate.getFullYear(),
+      todayDate.getMonth(),
+      todayDate.getDate(),
+    );
+
+    const expiryUtc = Date.UTC(
+      expiryDate.getFullYear(),
+      expiryDate.getMonth(),
+      expiryDate.getDate(),
+    );
+
+    return Math.floor((expiryUtc - todayUtc) / msPerDay);
   };
 
   handleChange = e => {

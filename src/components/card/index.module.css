@@ -1,11 +1,39 @@
 .card {
+  font-family: acumin-pro, sans-serif;
+  font-style: normal;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 300px;
-  height: 400px;
+  max-width: 320px;
+  height: 550px;
   background-color: #f7f7f7;
   margin: 20px;
+  padding: 20px;
+}
+
+.item {
+  margin: 10px 0px;
+}
+
+.mainHeading {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #353a42b5;
+  letter-spacing: 1px;
+}
+
+.title {
+  font-family: acumin-pro, sans-serif;
+  font-weight: 700;
+  color: #2f333a;
+  letter-spacing: 1px;
+}
+
+.description {
+  font-weight: 400;
+  color: #2f333a;
+  letter-spacing: 1px;
 }
 
 .campaignImage {
@@ -23,15 +51,50 @@
 }
 
 .campaignCreator {
+  font-weight: 700;
+  font-size: 8px;
+  text-transform: uppercase;
+  color: #353a42b5;
+  letter-spacing: 1px;
+}
+
+.creator {
+  font-weight: 700;
   word-wrap: break-word;
+  color: #2f333a;
+}
+
+.fundingGoal {
+  font-weight: 700;
+  font-size: 42px;
+  color: #2f333a;
+}
+
+.infoContainer {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #353a42b5;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0px;
+}
+
+.info {
+  font-size: 30px;
+  color: #2f333a;
+  padding-right: 10px;
 }
 
 .button {
+  font-weight: 700;
+  font-size: 12px;
   letter-spacing: 2px;
-  font-size: 15px;
   border: none;
   width: 100%;
-  padding: 10px;
+  padding: 15px;
   color: white;
   background-color: #57aa7c;
   text-align: center;
