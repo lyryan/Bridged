@@ -100,8 +100,8 @@
 
 .containerClass {
   height: 400px;
-  flex: 2;
-  /* justify-content: space-evenly; */
+  /* flex: 2; */
+  justify-content: center;
 }
 
 .itemClass {
