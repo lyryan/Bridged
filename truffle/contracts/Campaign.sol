@@ -27,6 +27,7 @@ contract Campaign {
     string public photoHash;
     State public state = State.Fundraising; // initialize on create
     mapping(address => uint256) public contributions;
+    uint public contributers;
 
     // Event that will be emitted whenever funding will be received
     event FundingReceived(
@@ -59,6 +60,7 @@ contract Campaign {
         raiseBy = fundRaisingDeadline;
         currentBalance = 0;
         accumulatedTotal = 0;
+        contributers = 0;
         photoHash = _photoHash;
     }
 
@@ -66,6 +68,7 @@ contract Campaign {
       */
     function contribute() external payable inState(State.Fundraising) {
         require(msg.sender != creator);
+        if(contributions[msg.sender] == 0) contributers++;
         contributions[msg.sender] = contributions[msg.sender].add(msg.value);
         currentBalance = currentBalance.add(msg.value);
         accumulatedTotal = currentBalance;
@@ -128,7 +131,8 @@ contract Campaign {
             uint256 currentAmount,
             uint256 totalFunded,
             uint256 goalAmount,
-            string memory _photoHash
+            string memory _photoHash,
+            uint256 backers
         )
     {
         campaignStarter = creator;
@@ -140,5 +144,6 @@ contract Campaign {
         totalFunded = accumulatedTotal;
         goalAmount = amountGoal;
         _photoHash = photoHash;
+        backers = contributers;
     }
 }

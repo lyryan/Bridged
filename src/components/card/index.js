@@ -25,6 +25,8 @@ const Card = props => {
     deadline,
     fundingGoal,
     route,
+    totalFunded,
+    backers,
   } = props;
 
   let button;
@@ -57,10 +59,17 @@ const Card = props => {
       <div className={styles.item}>
         <div className={styles.fundingGoal}>{fundingGoal} Ethers</div>
       </div>
-      <BorderLinearProgress variant="determinate" color="secondary" />
+      <BorderLinearProgress
+        variant="determinate"
+        value={
+          totalFunded / fundingGoal > 1
+            ? 100
+            : (totalFunded / fundingGoal) * 100
+        }
+      />
       <div className={styles.infoContainer}>
         <div>
-          <span className={styles.info}>0</span>
+          <span className={styles.info}>{backers}</span>
           <span className={styles.mainHeading}>BACKERS</span>
         </div>
         <div>

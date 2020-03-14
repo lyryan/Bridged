@@ -81,6 +81,7 @@ class Explore extends React.Component {
       const todayDate = new Date().toUTCString();
       const expiryDate = new Date(el.deadline * 1000).toUTCString();
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
+      const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
         <Card
           key={el.address}
@@ -89,7 +90,9 @@ class Explore extends React.Component {
           campaignDesc={el.campaignDesc}
           campaignCreator={el.campaignStarter}
           deadline={this.daysBetween(todayDate, expiryDate)}
+          totalFunded={totalFunded}
           fundingGoal={goalAmount}
+          backers={el.backers}
           route={`/campaigns/${el.address}`}
         />
       );
