@@ -1,4 +1,3 @@
-/* eslint-disable */
 import 'date-fns';
 
 import React from 'react';
@@ -48,7 +47,6 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      buffer: '',
       imgSrc: null,
     };
   }
@@ -66,9 +64,10 @@ class Form extends React.Component {
   };
 
   convertToBuffer = async reader => {
+    const { setBuffer } = this.props;
     // Convert file to a buffer to upload to IPFS
     const buffer = await Buffer.from(reader.result);
-    this.props.setBuffer(buffer);
+    setBuffer(buffer);
   };
 
   render() {
@@ -77,9 +76,10 @@ class Form extends React.Component {
       data,
       handleChange,
       handleSubmit,
-      handleBufferChange,
       handleDateChange,
     } = this.props;
+
+    const { imgSrc } = this.state;
     return (
       <div className={classes.root}>
         <form
@@ -138,11 +138,7 @@ class Form extends React.Component {
             </Button>
           </div>
           <div>
-            <img
-              style={{ width: '300px' }}
-              src={this.state.imgSrc}
-              alt="Preview"
-            />
+            <img style={{ width: '300px' }} src={imgSrc} alt="Preview" />
             <input type="file" onChange={this.processFile} />
           </div>
         </form>

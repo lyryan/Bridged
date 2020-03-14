@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DotenvPlugin = require('webpack-dotenv-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const webpackConfig = {
   resolve: {
@@ -24,21 +25,44 @@ const webpackConfig = {
         use: ['babel-loader', 'eslint-loader'],
       },
       {
-        test: /\.(css)$/,
-        use: [
-          'style-loader',
+        test: /\.css$/,
+        oneOf: [
           {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: true,
-            },
+            test: /\.module\.css$/,
+            use: [
+              MiniCssExtractPlugin.loader,
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: true,
+                },
+              },
+            ],
+          },
+          {
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
           },
         ],
       },
       {
         test: /\.svg$/,
         use: ['@svgr/webpack'],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf)$/,
+        use: [
+          {
+            loader: 'url-loader',
+          },
+        ],
       },
     ],
   },
@@ -62,6 +86,7 @@ const webpackConfig = {
         removeRedundantAttributes: true,
       },
     }),
+    new MiniCssExtractPlugin(),
   ],
 };
 
