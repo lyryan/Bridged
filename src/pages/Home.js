@@ -89,21 +89,22 @@ class Home extends React.Component {
     const { campaigns } = this.state;
 
     return campaigns.map(el => {
-      const options = { dateStyle: 'full' };
-      const expiryDate = new Date(el.deadline * 1000).toLocaleString(options); // convert to local time
+      const expiryDate = new Date(el.deadline * 1000).toUTCString();
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
+      const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
-        <div key={el.address}>
-          <Card
-            campaignHash={el._photoHash}
-            campaignTitle={el.campaignTitle}
-            campaignDesc={el.campaignDesc}
-            campaignCreator={el.campaignStarter}
-            deadline={expiryDate}
-            fundingGoal={goalAmount}
-            route={`/campaigns/${el.address}`}
-          />
-        </div>
+        <Card
+          key={el.address}
+          campaignHash={el._photoHash}
+          campaignTitle={el.campaignTitle}
+          campaignDesc={el.campaignDesc}
+          campaignCreator={el.campaignStarter}
+          expiryDate={expiryDate}
+          totalFunded={totalFunded}
+          fundingGoal={goalAmount}
+          backers={el.backers}
+          route={`/campaigns/${el.address}`}
+        />
       );
     });
   };

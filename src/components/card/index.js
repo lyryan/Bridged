@@ -7,7 +7,7 @@ import styles from './index.module.css';
 
 const BorderLinearProgress = withStyles({
   root: {
-    height: 10,
+    height: 4,
     backgroundColor: lighten('#6ca880', 0.5),
   },
   bar: {
@@ -77,9 +77,9 @@ const Card = props => {
         <div className={styles.title}>{campaignTitle}</div>
       </div>
       <div className={styles.description}>
-        {campaignDesc.length < 73
+        {campaignDesc.length < 70
           ? campaignDesc
-          : campaignDesc.substr(0, 73).concat('...')}
+          : campaignDesc.substr(0, 70).concat('...')}
       </div>
       <div className={styles.item}>
         <div className={styles.campaignCreator}>Created by</div>
