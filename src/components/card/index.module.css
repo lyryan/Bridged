@@ -34,6 +34,7 @@
   font-weight: 400;
   color: #2f333a;
   letter-spacing: 1px;
+  word-wrap: break-word;
 }
 
 .campaignImage {
@@ -45,9 +46,7 @@
 }
 
 .campaignImage img {
-  flex-shrink: 0;
-  max-width: inherit;
-  max-height: 200px;
+  height: 100%;
 }
 
 .campaignCreator {

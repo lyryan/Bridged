@@ -27,17 +27,17 @@ const getTimeRemaining = date => {
   const timeRemaining = expiryDate - todayDate;
 
   if (timeRemaining < msPerDay) {
-    let hoursRemaining = Math.floor(timeRemaining / msPerHour);
+    const hoursRemaining = Math.floor(timeRemaining / msPerHour);
     return {
       str: hoursRemaining === 1 ? 'HOUR TO GO' : 'HOURS TO GO',
       val: hoursRemaining <= 0 ? 0 : hoursRemaining,
     };
   }
 
-  let daysRemaining = Math.floor(timeRemaining / msPerDay);
+  const daysRemaining = Math.floor(timeRemaining / msPerDay);
   return {
     str: daysRemaining === 1 ? 'DAY TO GO' : 'DAYS TO GO',
-    val: daysRemaining,
+    val: daysRemaining > 30 ? '>30' : daysRemaining,
   };
 };
 
@@ -76,7 +76,11 @@ const Card = props => {
         <div className={styles.mainHeading}>Campaign</div>
         <div className={styles.title}>{campaignTitle}</div>
       </div>
-      <div className={styles.description}>{campaignDesc}</div>
+      <div className={styles.description}>
+        {campaignDesc.length < 73
+          ? campaignDesc
+          : campaignDesc.substr(0, 73).concat('...')}
+      </div>
       <div className={styles.item}>
         <div className={styles.campaignCreator}>Created by</div>
         <div className={styles.creator}>{campaignCreator}</div>
