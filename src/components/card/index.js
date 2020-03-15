@@ -16,13 +16,38 @@ const BorderLinearProgress = withStyles({
   },
 })(LinearProgress);
 
+const getTimeRemaining = date => {
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const msPerHour = 1000 * 60 * 60;
+
+  const todayDate = new Date(new Date().toUTCString());
+
+  const expiryDate = new Date(date);
+
+  const timeRemaining = expiryDate - todayDate;
+
+  if (timeRemaining < msPerDay) {
+    let hoursRemaining = Math.floor(timeRemaining / msPerHour);
+    return {
+      str: hoursRemaining === 1 ? 'HOUR TO GO' : 'HOURS TO GO',
+      val: hoursRemaining <= 0 ? 0 : hoursRemaining,
+    };
+  }
+
+  let daysRemaining = Math.floor(timeRemaining / msPerDay);
+  return {
+    str: daysRemaining === 1 ? 'DAY TO GO' : 'DAYS TO GO',
+    val: daysRemaining,
+  };
+};
+
 const Card = props => {
   const {
     campaignHash,
     campaignTitle,
     campaignDesc,
     campaignCreator,
-    deadline,
+    expiryDate,
     fundingGoal,
     route,
     totalFunded,
@@ -73,8 +98,12 @@ const Card = props => {
           <span className={styles.mainHeading}>BACKERS</span>
         </div>
         <div>
-          <span className={styles.info}>{deadline}</span>
-          <span className={styles.mainHeading}>DAYS TO GO</span>
+          <span className={styles.info}>
+            {getTimeRemaining(expiryDate).val}
+          </span>
+          <span className={styles.mainHeading}>
+            {getTimeRemaining(expiryDate).str}
+          </span>
         </div>
       </div>
       {button}
