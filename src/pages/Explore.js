@@ -78,9 +78,9 @@ class Explore extends React.Component {
     const { web3 } = this.props;
     const { campaigns } = this.state;
     return campaigns.map(el => {
-      const options = { dateStyle: 'full' };
-      const expiryDate = new Date(el.deadline * 1000).toLocaleString(options); // convert to local time
+      const expiryDate = new Date(el.deadline * 1000).toUTCString();
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
+      const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
         <Card
           key={el.address}
@@ -88,8 +88,10 @@ class Explore extends React.Component {
           campaignTitle={el.campaignTitle}
           campaignDesc={el.campaignDesc}
           campaignCreator={el.campaignStarter}
-          deadline={expiryDate}
+          expiryDate={expiryDate}
+          totalFunded={totalFunded}
           fundingGoal={goalAmount}
+          backers={el.backers}
           route={`/campaigns/${el.address}`}
         />
       );
