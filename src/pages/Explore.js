@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import SearchIcon from '@material-ui/icons/Search';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
 import styles from './Explore.module.css';
@@ -109,13 +110,25 @@ class Explore extends React.Component {
     const { searchResults } = this.state;
     return searchResults.map(element => {
       return (
-        <div key={element.address}>
-          <Link to={`/campaigns/${element.address}`}>
-            Title: {element.campaignTitle}
-            <br />
-            Creator:
-            <br /> {element.address}
-          </Link>
+        <div id={styles.searchResults} key={element.address}>
+          <div id={styles.center}>
+            <div style={{ width: '10%' }}>
+              <Link to={`/campaigns/${element.address}`}>
+                <img
+                  style={{ height: '10%', width: '100%' }}
+                  alt="campaign"
+                  src={`https://ipfs.io/ipfs/${element._photoHash}`}
+                />
+              </Link>
+            </div>
+            <div>
+              <Link to={`/campaigns/${element.address}`}>
+                Title: {element.campaignTitle}
+                <br />
+                Creator: {element.address}
+              </Link>
+            </div>
+          </div>
         </div>
       );
     });
@@ -129,14 +142,17 @@ class Explore extends React.Component {
           <CircularProgress />
         ) : (
           <div>
-            <form>
-              <input
-                type="text"
-                placeholder="Search Campaigns..."
-                onChange={this.handleChange}
-                value={searchInput}
-              />
-            </form>
+            <div id={styles.search}>
+              <SearchIcon />
+              <form>
+                <input
+                  type="text"
+                  placeholder="Search Campaigns..."
+                  onChange={this.handleChange}
+                  value={searchInput}
+                />
+              </form>
+            </div>
             <div>
               {searchResults.length > 0 ? this.renderSearchResults() : null}
             </div>

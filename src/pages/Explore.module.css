@@ -5,3 +5,35 @@
   margin: 20px;
   flex-flow: row wrap;
 }
+
+#search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+
+input {
+  min-width: 200px;
+  padding: 3px;
+  font-size: 18px;
+  font-style: italic;
+  color: #444;
+  min-height: 30px;
+}
+
+#searchResults {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+#center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-flow: row nowrap;
+  border: 1px solid grey;
+}
