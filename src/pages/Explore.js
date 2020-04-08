@@ -112,7 +112,7 @@ class Explore extends React.Component {
       return (
         <div id={styles.searchResults} key={element.address}>
           <div id={styles.center}>
-            <div style={{ width: '10%' }}>
+            <div style={{ width: '10%', border: '1px solid grey' }}>
               <Link to={`/campaigns/${element.address}`}>
                 <img
                   style={{ height: '10%', width: '100%' }}
