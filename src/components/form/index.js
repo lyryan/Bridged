@@ -16,8 +16,8 @@ const useStyles = {
       width: 500,
       margin: 10,
     },
-    display: 'flex',
-    flexDirection: 'row',
+    position: 'relative',
+    flexDirection: 'column',
     '& label.Mui-focused': {
       color: '#4BA173',
     },
@@ -26,20 +26,25 @@ const useStyles = {
     },
   },
   root: {
-    display: 'flex',
+    position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 500,
+    
   },
   button: {
     backgroundColor: '#4BA173',
     '&:hover': {
       background: 'rgba(75, 161, 115, 0.9)',
     },
-    width: 300,
+    width: 200,
+    textTransform: 'capitalize',
+    display: 'inline-block',
+    marginBottom: 50
   },
   formField: {
-    width: 300,
+    width: 500,
+    marginTop: 5,
+    marginBottom: 5
   },
 };
 
@@ -81,67 +86,92 @@ class Form extends React.Component {
 
     const { imgSrc } = this.state;
     return (
-      <div className={classes.root}>
-        <form
-          className={classes.form}
-          onSubmit={handleSubmit}
-          noValidate
-          autoComplete="off"
-        >
-          <div>
-            <TextField
-              className={classes.formField}
-              label="Campaign Name"
-              name="title"
-              color="primary"
-              onChange={handleChange}
-              width="20"
-              value={data.title}
-            />
-            <TextField
-              className={classes.formField}
-              label="Campaign Description"
-              name="description"
-              color="primary"
-              multiline
-              onChange={handleChange}
-              value={data.description}
-            />
-            <TextField
-              className={classes.formField}
-              label="Funding Goal"
-              name="fundingGoal"
-              color="primary"
-              type="number"
-              onChange={handleChange}
-              value={data.fundingGoal}
-            />
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDateTimePicker
-                variant="inline"
-                label="Set a Deadline"
-                value={data.selectedDeadline}
-                onChange={handleDateChange}
-                onError={console.log}
-                disablePast
-                format="MM/dd/yyyy hh:mm a"
-                minDate={new Date()}
+      <div style={{
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center',         
+      }}>
+        <h1 style={{
+          fontFamily: 'Arial',
+          fontSize: '300%', 
+          fontWeight: '200',
+          textAlign: 'center', 
+          marginTop: '15%'
+          }}>
+            Create life-changing campaigns <br/> in a matter of seconds</h1>
+        <div className={classes.root}>
+          <form
+            className={classes.form}
+            onSubmit={handleSubmit}
+            noValidate
+            autoComplete="off"
+          >
+            <div>
+              <TextField
+                className={classes.formField}
+                label="Campaign Name"
+                name="title"
+                color="primary"
+                onChange={handleChange}
+                width="20"
+                value={data.title}
               />
-            </MuiPickersUtilsProvider>
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Create Campaign
-            </Button>
-          </div>
-          <div>
-            <img style={{ width: '300px' }} src={imgSrc} alt="Preview" />
-            <input type="file" onChange={this.processFile} />
-          </div>
-        </form>
+              <TextField
+                className={classes.formField}
+                label="Campaign Description"
+                name="description"
+                color="primary"
+                multiline
+                onChange={handleChange}
+                value={data.description}
+              />
+              <TextField
+                className={classes.formField}
+                label="Funding Goal"
+                name="fundingGoal"
+                color="primary"
+                type="number"
+                onChange={handleChange}
+                value={data.fundingGoal}
+                style={{marginBottom: '10%'}}
+              />
+              <div>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDateTimePicker
+                      variant="inline"
+                      label="Set a Deadline"
+                      value={data.selectedDeadline}
+                      onChange={handleDateChange}
+                      onError={console.log}
+                      disablePast
+                      format="MM/dd/yyyy hh:mm a"
+                      minDate={new Date()}
+                    />
+                  </MuiPickersUtilsProvider><br/><br/>
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                  >
+                    Create Campaign
+                  </Button>
+                </div>
+                <div style={{textAlign: 'center', width: '80%', margin: 'auto'}}>
+                    <img src={imgSrc} alt="Choose a campaign picture to preview" style={{
+                      display: 'inline-block', 
+                      width: '60%', 
+                      marginTop: '3%',
+                      marginBottom: '3%',
+                      fontFamily: 'Arial',
+                    }}/>
+                    <input type="file" onChange={this.processFile} />
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

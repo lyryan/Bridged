@@ -2,10 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
 import styles from './Home.module.css';
 import handsIcon from '../images/landing-header.png';
+import nextIcon from '../images/carousel-arrow-next.png';
+import prevIcon from '../images/carousel-arrow-prev.png';
 
 const responsive = {
   superLargeDesktop: {
@@ -26,6 +30,35 @@ const responsive = {
     items: 1,
   },
 };
+
+const ColorButton = withStyles(({
+  root: {
+    fontFamily: 'Arial',
+    fontWeight: '900',
+    textTransform: 'capitalize',
+    backgroundColor: '#4BA173',
+    color: '#26282d',
+    '&:hover': {
+      backgroundColor: 'rgba(75, 161, 115, 0.5)',
+    },
+  },
+}))(Button);
+
+const CustomButtonGroupAsArrows = ({ next, previous }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+      }}
+    >
+      <Button type="button" className={styles.arrow} style={{position: 'absolute', left: '12%'}}><img src={prevIcon}  alt="prev" onClick={previous}/></Button>
+      <Button type="button" className={styles.arrow} style={{position: 'absolute', right: '12%'}}><img src={nextIcon}  alt="next" onClick={next} /></Button>
+    </div>
+  );
+};
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -93,7 +126,7 @@ class Home extends React.Component {
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
       const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
-        <Card
+        <Card 
           key={el.address}
           campaignHash={el._photoHash}
           campaignTitle={el.campaignTitle}
@@ -123,24 +156,32 @@ class Home extends React.Component {
               Ethereum blockchain, offering more control to the masses and less
               worry over undelivered promises.
             </p>
-            <Link style={{ textDecoration: 'none' }} to="/create-campaign">
+            {/* <Link style={{ textDecoration: 'none' }} to="/create-campaign">
               <button type="button">Get Started</button>
-            </Link>
+            </Link> */}
+            <ColorButton href="/create-campaign" variant="contained">
+              Get Started
+            </ColorButton>
           </span>
         </div>
 
         <div className={styles.middle}>
           <h3>Featured Campaigns</h3>
-          <div>
-            <Carousel
+          <div className={styles.carousel}> 
+            <Carousel 
+              // autoPlay
+              // autoPlaySpeed={3000}
+              // transitionDuration={500}
+              // itemClass={styles.itemClass}
+              // containerClass={styles.containerClass}
               infinite
-              autoPlay
-              autoPlaySpeed={3000}
-              transitionDuration={500}
-              responsive={responsive}
+              showDots
               draggable
-              itemClass={styles.itemClass}
-              containerClass={styles.containerClass}
+              renderButtonGroupOutside
+              containerClass="container-padding-bottom"
+              customButtonGroup={<CustomButtonGroupAsArrows />}
+              responsive={responsive}
+              arrows={false}
             >
               {this.renderCards()}
             </Carousel>
@@ -148,9 +189,9 @@ class Home extends React.Component {
         </div>
 
         <div className={styles.bottom}>
-          <h3>Discover more campaigns on Bridged.</h3>
+          <p>Discover more campaigns on Bridged.</p>
           <Link style={{ textDecoration: 'none' }} to="/explore">
-            <button type="button">View More</button>
+            <button type="button">View More &raquo;</button>
           </Link>
         </div>
       </div>

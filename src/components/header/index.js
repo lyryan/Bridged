@@ -26,13 +26,14 @@ import Home from '../../pages/Home';
 
 const useStyles = makeStyles(theme => ({
   colorPrimary: {
-    backgroundColor: '#F6F6F6',
-    color: '#F6F6F6',
+    backgroundColor: '#2A2D33',
+    color: '#2A2D33',
   },
   navItem: {
     fontWeight: 800,
-    color: '#2A2D33',
+    color: '#FFFFFF',
     marginRight: '20px',
+    fontSize: '75%',
   },
   nav: {
     display: 'flex',
