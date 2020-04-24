@@ -112,20 +112,15 @@ class Explore extends React.Component {
       return (
         <div id={styles.searchResults} key={element.address}>
           <div id={styles.center}>
-            <div style={{ width: '10%', border: '1px solid grey' }}>
+            <div style={{ width: '15%', border: '1px solid grey' }}>
               <Link to={`/campaigns/${element.address}`}>
+                <h3>Title: {element.campaignTitle}</h3>
+                <br />
                 <img
-                  style={{ height: '10%', width: '100%' }}
+                  style={{ height: '15%', width: '100%' }}
                   alt="campaign"
                   src={`https://ipfs.io/ipfs/${element._photoHash}`}
                 />
-              </Link>
-            </div>
-            <div>
-              <Link to={`/campaigns/${element.address}`}>
-                Title: {element.campaignTitle}
-                <br />
-                Creator: {element.address}
               </Link>
             </div>
           </div>
