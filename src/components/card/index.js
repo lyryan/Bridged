@@ -9,6 +9,10 @@ const BorderLinearProgress = withStyles({
   root: {
     height: 4,
     backgroundColor: lighten('#6ca880', 0.5),
+    borderTopRightRadius: '8px',
+    borderBottomRightRadius: '8px',
+    borderTopLeftRadius: '8px',
+    borderBottomLeftRadius: '8px',
   },
   bar: {
     borderRadius: 20,

@@ -8,6 +8,10 @@ const BorderLinearProgress = withStyles({
   root: {
     height: 10,
     backgroundColor: lighten('#6ca880', 0.5),
+    borderTopRightRadius: '8px',
+    borderBottomRightRadius: '8px',
+    borderTopLeftRadius: '8px',
+    borderBottomLeftRadius: '8px',
   },
   bar: {
     borderRadius: 20,
@@ -144,32 +148,37 @@ class Campaign extends React.Component {
     return (
       <>
         <div className={styles.container}>
-          <div>
-            <div className={styles.item}>
+          <div className={styles.info}>
+            {/* <div className={styles.item}>
               State: {CAMPAIGN_STATE[campaignDetails.currentState]}
+            </div> */}
+            <div className={[styles.item, styles.title].join(' ')}>
+              {campaignDetails.campaignTitle}
             </div>
-            <div className={styles.item}>
-              Campaign Title: {campaignDetails.campaignTitle}
-            </div>
-            <div className={styles.item}>
+            {/* <div className={styles.item}>
               Campaign Address: {campaignDetails.address}
+            </div> */}
+            <div className={[styles.item, styles.description].join(' ')}>
+              {campaignDetails.campaignDesc}
             </div>
-            <div className={styles.item}>
-              Campaign Description: {campaignDetails.campaignDesc}
+            <div className={[styles.item, styles.grey].join(' ')}>
+              {/* Creator Address: {campaignDetails.campaignStarter} */}
+              Created by:
             </div>
-            <div className={styles.item}>
-              Creator Address: {campaignDetails.campaignStarter}
+            <div className={[styles.item, styles.creator].join(' ')}>
+              {campaignDetails.campaignStarter}
             </div>
-            <div className={styles.item}>
-              Days until Expiration: {campaignDetails.deadline}
+            <div className={styles.item} style={{marginBottom: '3%'}}>
+              {/* Total Funds: {campaignDetails.totalFunded} */}
+              <span className={styles.title}>{campaignDetails.totalFunded} Ethers</span> 
+              <span className={styles.grey} style={{fontSize: '110%'}}> of {campaignDetails.goalAmount} Ethers goal</span>
             </div>
-            <div className={styles.item}>
+            {/* <div className={styles.item}>
               Funding Goal: {campaignDetails.goalAmount}
-            </div>
-            <div className={styles.item}>
-              Total Funds: {campaignDetails.totalFunded}
-            </div>
+            </div> */}
+            
             <BorderLinearProgress
+              className={styles.progressBar}
               variant="determinate"
               color="secondary"
               value={
@@ -179,30 +188,34 @@ class Campaign extends React.Component {
                     100
               }
             />
-            <div>
+            <div className={styles.buttons}>
               <input
                 type="number"
                 value={fundAmount}
                 onChange={this.handleChange}
                 name="fundAmount"
+                className={styles.donate}
               />
+              <button
+                type="button"
+                className={styles.button}
+                onClick={this.fundCampaign}
+                disabled={campaignDetails.currentState !== 0}
+              >
+                Contribute
+              </button>
+              <button
+                type="button"
+                className={styles.button}
+                onClick={this.getRefund}
+                disabled={campaignDetails.currentState !== 1}
+              >
+                Get Refund
+              </button>
             </div>
-            <button
-              type="button"
-              className={styles.button}
-              onClick={this.fundCampaign}
-              disabled={campaignDetails.currentState !== 0}
-            >
-              Contribute
-            </button>
-            <button
-              type="button"
-              className={styles.button}
-              onClick={this.getRefund}
-              disabled={campaignDetails.currentState !== 1}
-            >
-              Get Refund
-            </button>
+            <div className={[styles.item, styles.date].join(' ')}>
+              Expires {campaignDetails.deadline}
+            </div>
           </div>
           <div className={styles.itemImage}>
             <img

@@ -28,7 +28,7 @@ const useStyles = {
   root: {
     position: 'relative',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
     
   },
   button: {
@@ -161,7 +161,8 @@ class Form extends React.Component {
                 <div style={{textAlign: 'center', width: '80%', margin: 'auto'}}>
                     <img src={imgSrc} alt="Choose a campaign picture to preview" style={{
                       display: 'inline-block', 
-                      width: '60%', 
+                      width: '80%',
+                      height: 'auto', 
                       marginTop: '3%',
                       marginBottom: '3%',
                       fontFamily: 'Arial',

@@ -50,7 +50,7 @@ const CustomButtonGroupAsArrows = ({ next, previous }) => {
       style={{
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
       }}
     >
       <Button type="button" className={styles.arrow} style={{position: 'absolute', left: '12%'}}><img src={prevIcon}  alt="prev" onClick={previous}/></Button>
@@ -126,18 +126,20 @@ class Home extends React.Component {
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
       const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
-        <Card 
-          key={el.address}
-          campaignHash={el._photoHash}
-          campaignTitle={el.campaignTitle}
-          campaignDesc={el.campaignDesc}
-          campaignCreator={el.campaignStarter}
-          expiryDate={expiryDate}
-          totalFunded={totalFunded}
-          fundingGoal={goalAmount}
-          backers={el.backers}
-          route={`/campaigns/${el.address}`}
-        />
+        <div className={styles.card}>
+          <Card 
+            key={el.address}
+            campaignHash={el._photoHash}
+            campaignTitle={el.campaignTitle}
+            campaignDesc={el.campaignDesc}
+            campaignCreator={el.campaignStarter}
+            expiryDate={expiryDate}
+            totalFunded={totalFunded}
+            fundingGoal={goalAmount}
+            backers={el.backers}
+            route={`/campaigns/${el.address}`}
+          />
+        </div>
       );
     });
   };

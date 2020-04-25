@@ -1,7 +1,24 @@
+.card {
+  background-color: #f6f6f6;
+  margin: 4% auto;
+  min-width: 28%;
+}
+
 .cardContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-  flex-flow: row wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  max-width: 62%;
+  margin: 0 auto;
+}
+
+h3 {
+  position: relative;
+  left: 20%;
+  width: 30%;
+  font-family: "Arial";
+  font-size: 185%;
+  color: #26282d;
+  margin-bottom: 3%;
 }

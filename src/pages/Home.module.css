@@ -65,22 +65,27 @@
 }
 
 .middle .carousel {
-  width: 60%;
+  max-width: 62%;
   margin: 0 auto;
   margin-bottom: 7%;
 }
 
+.card {
+  width: 90%;
+  background-color: #f6f6f6;
+}
+
 .arrow {
   width: 5%;
-  height: 10%;
+  height: auto;
   background-color: transparent;
   border: none;
-  bottom: 0;
   top: 55%;
 }
 
 .arrow img {
   width: 100%;
+  height: auto;
 }
 
 .bottom {
