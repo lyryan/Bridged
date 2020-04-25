@@ -24,15 +24,43 @@ input {
 
 #searchResults {
   display: flex;
+  z-index: 1500;
   justify-content: center;
   align-items: center;
   align-content: center;
+  padding-left: 15px;
 }
 
-#center {
+.center {
   display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  flex-flow: row no-wrap;
+}
+
+.centerSpin {
+  display: flex;
+  flex: 1 1 0n;
   justify-content: center;
   align-items: center;
   align-content: center;
-  flex-flow: row nowrap;
+  padding-top: 200px;
+  /* flex-flow: row wrap; */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation-name: spin;
+  animation-duration: 3000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
