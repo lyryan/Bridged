@@ -114,23 +114,31 @@ class Explore extends React.Component {
           <div className={styles.center}>
             <div
               style={{
-                width: '200px',
+                width: '260px',
                 border: '1px solid grey',
               }}
             >
-              <Link to={`/campaigns/${element.address}`}>
-                <h3>Title: {element.campaignTitle}</h3>
-                <br />
-                <img
+              <Link
+                to={`/campaigns/${element.address}`}
+                className={styles.searchRes}
+                style={{ textDecoration: 'none' }}
+              >
+                <div>
+                  <img
+                    alt="campaign"
+                    src={`https://ipfs.io/ipfs/${element._photoHash}`}
+                    className={styles.searchImages}
+                  />
+                </div>
+                <div
                   style={{
-                    height: '15%',
-                    width: '100%',
-                    minWidth: '100px',
-                    minHeight: '50px',
+                    width: '110px',
+                    height: '75px',
+                    backgroundColor: 'lightGray',
                   }}
-                  alt="campaign"
-                  src={`https://ipfs.io/ipfs/${element._photoHash}`}
-                />
+                >
+                  <h3>{element.campaignTitle}</h3>
+                </div>
               </Link>
             </div>
           </div>
@@ -176,7 +184,14 @@ class Explore extends React.Component {
         ) : (
           <div>
             <div id={styles.search}>
-              <SearchIcon />
+              <SearchIcon
+                style={{
+                  borderTop: '1px solid rgb(208,208,208)',
+                  borderLeft: '1px solid rgb(208,208,208)',
+                  borderBottom: '1px solid rgb(208,208,208)',
+                  padding: '6.75px',
+                }}
+              />
               <form>
                 <input
                   type="text"
