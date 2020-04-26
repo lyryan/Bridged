@@ -91,27 +91,14 @@ class App extends React.Component {
           }}
           isLoggedIn={isLoggedIn}
           account={account}
+          balance={balance}
+          email={email}
           logout={() => {
             this.logout();
           }}
           web3={web3}
           ipfs={ipfs}
         />
-        <div>
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              {`isLoggedIn: ${isLoggedIn}`}
-              <div>{account}</div>
-              <div>Balance: {balance}</div>
-              <div>Email: {email}</div>
-            </div>
-          </div>
-        </div>
       </>
     );
   }

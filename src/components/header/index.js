@@ -10,17 +10,15 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import Logo from '../../svg/logo-black.svg';
 import CreateCampaigns from '../../pages/CreateCampaigns';
 import Explore from '../../pages/Explore';
+import MyAccount from '../../pages/MyAccount';
 import Campaign from '../../pages/Campaign';
 import Home from '../../pages/Home';
 
@@ -94,43 +92,34 @@ const useStyles = makeStyles(theme => ({
     },
   },
   sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-    color: '#2A2D33',
-  },
-  sectionMobile: {
     display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
+    justifyContent: 'flex-end',
+    color: '#2A2D33',
   },
 }));
 
 const PrimarySearchAppBar = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const { handleLogIn, isLoggedIn, logout, account, web3, ipfs } = props;
+  const {
+    handleLogIn,
+    isLoggedIn,
+    logout,
+    account,
+    web3,
+    ipfs,
+    email,
+    balance,
+  } = props;
+
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = event => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -144,33 +133,15 @@ const PrimarySearchAppBar = props => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
+      <MenuItem onClick={handleMenuClose}>
+        <Link
+          to="/my-account"
+          style={{ textDecoration: 'none', color: '#2A2D33' }}
         >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+          My account
+        </Link>
       </MenuItem>
+      <MenuItem onClick={handleMenuClose && logout}>Sign Out</MenuItem>
     </Menu>
   );
 
@@ -198,7 +169,7 @@ const PrimarySearchAppBar = props => {
               <div
                 style={{
                   display: 'flex',
-                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <Link to="/">
@@ -207,62 +178,32 @@ const PrimarySearchAppBar = props => {
               </div>
             </div>
 
-            <div className={classes.sectionDesktop}>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ 'aria-label': 'search' }}
-                />
+            <div className={classes.grow}>
+              <div className={classes.sectionDesktop}>
+                {isLoggedIn ? (
+                  <IconButton
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    onClick={handleProfileMenuOpen}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                ) : (
+                  <Button
+                    onClick={handleLogIn}
+                    className={classes.logIn}
+                    variant="outlined"
+                  >
+                    Sign In
+                  </Button>
+                )}
               </div>
-              <Button
-                style={{ display: isLoggedIn ? 'none' : 'block' }}
-                onClick={handleLogIn}
-                className={classes.logIn}
-                variant="outlined"
-              >
-                {isLoggedIn ? 'Sign Out' : 'Sign In'}
-              </Button>
-              <Button
-                style={{ display: isLoggedIn ? 'block' : 'none' }}
-                onClick={logout}
-                className={classes.logIn}
-                variant="outlined"
-              >
-                Sign Out
-              </Button>
-              {/* <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton> */}
-            </div>
-
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
             </div>
           </Toolbar>
         </AppBar>
-        {renderMobileMenu}
         {renderMenu}
         <Switch>
           <Route exact path="/">
@@ -284,6 +225,9 @@ const PrimarySearchAppBar = props => {
               />
             ))}
           />
+          <Route path="/my-account">
+            <MyAccount account={account} email={email} balance={balance} />
+          </Route>
         </Switch>
       </div>
     </Router>
