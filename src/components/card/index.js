@@ -9,10 +9,6 @@ const BorderLinearProgress = withStyles({
   root: {
     height: 4,
     backgroundColor: lighten('#6ca880', 0.5),
-    borderTopRightRadius: '8px',
-    borderBottomRightRadius: '8px',
-    borderTopLeftRadius: '8px',
-    borderBottomLeftRadius: '8px',
   },
   bar: {
     borderRadius: 20,
@@ -74,7 +70,7 @@ const Card = props => {
   return (
     <div className={styles.card}>
       <div className={styles.campaignImage}>
-        <img className={styles.image} alt="campaign" src={`https://ipfs.io/ipfs/${campaignHash}`} />
+        <img alt="campaign" src={`https://ipfs.io/ipfs/${campaignHash}`} />
       </div>
       <div className={styles.item}>
         <div className={styles.mainHeading}>Campaign</div>

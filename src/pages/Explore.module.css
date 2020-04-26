@@ -1,16 +1,12 @@
-.card {
-  background-color: #f6f6f6;
-  margin: 4% auto;
-  min-width: 28%;
-}
-
 .cardContainer {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   justify-content: space-evenly;
-  max-width: 62%;
+  align-items: center;
+  margin: 20px;
+  flex-flow: row wrap;
+  max-width: 900px;
   margin: 0 auto;
+  border: 1px solid blue;
 }
 
 .header {

@@ -55,7 +55,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* flex-wrap: wrap; */
+  flex-wrap: wrap;
 }
 
 .donate {
@@ -63,7 +63,7 @@
   width: 20%;
   padding: 2% 0;
   text-align: center;
-  margin-right: 5%;
+  margin: 0 30%;
 }
 
 .button {
@@ -76,7 +76,8 @@
   background-color: #57aa7c;
   text-align: center;
   cursor: pointer;
-  margin: 1% 0;
+  justify-self: space-evenly;
+  margin: 2% 3%;
 }
 
 .button[type='button']:disabled {
