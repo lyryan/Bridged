@@ -121,7 +121,10 @@ class Explore extends React.Component {
               <Link
                 to={`/campaigns/${element.address}`}
                 className={styles.searchRes}
-                style={{ textDecoration: 'none' }}
+                style={{
+                  textDecoration: 'none',
+                  boxShadow: ' 5px 5px 3px 0 rgba(0,0,0,0.75)',
+                }}
               >
                 <div>
                   <img
@@ -130,14 +133,7 @@ class Explore extends React.Component {
                     className={styles.searchImages}
                   />
                 </div>
-                <div
-                  style={{
-                    width: '110px',
-                    minHeight: '75px',
-                    maxHeight: '75px',
-                    backgroundColor: 'lightGray',
-                  }}
-                >
+                <div className={styles.title}>
                   <h3>{element.campaignTitle}</h3>
                 </div>
               </Link>

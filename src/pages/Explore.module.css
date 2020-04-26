@@ -86,4 +86,25 @@ h3 {
   min-height: 75px;
   max-width: 150px;
   max-height: 75px;
+  display: block;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 110px;
+  min-height: 75px;
+  max-height: 75px;
+  background-color: #f3f3f3;
+}
+
+.title :hover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 110px;
+  min-height: 75px;
+  max-height: 75px;
+  background-color: #dbdbdb;
 }
