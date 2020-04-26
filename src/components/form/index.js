@@ -28,8 +28,7 @@ const useStyles = {
   root: {
     position: 'relative',
     justifyContent: 'center',
-    alignItems: 'center'
-    
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#4BA173',
@@ -39,12 +38,12 @@ const useStyles = {
     width: 200,
     textTransform: 'capitalize',
     display: 'inline-block',
-    marginBottom: 50
+    marginBottom: 50,
   },
   formField: {
     width: 500,
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
   },
 };
 
@@ -86,19 +85,24 @@ class Form extends React.Component {
 
     const { imgSrc } = this.state;
     return (
-      <div style={{
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center',         
-      }}>
-        <h1 style={{
-          fontFamily: 'Arial',
-          fontSize: '300%', 
-          fontWeight: '200',
-          textAlign: 'center', 
-          marginTop: '15%'
-          }}>
-            Create life-changing campaigns <br/> in a matter of seconds</h1>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: 'Arial',
+            fontSize: '300%',
+            fontWeight: '200',
+            textAlign: 'center',
+            marginTop: '15%',
+          }}
+        >
+          Create life-changing campaigns <br /> in a matter of seconds
+        </h1>
         <div className={classes.root}>
           <form
             className={classes.form}
@@ -133,10 +137,16 @@ class Form extends React.Component {
                 type="number"
                 onChange={handleChange}
                 value={data.fundingGoal}
-                style={{marginBottom: '10%'}}
+                style={{ marginBottom: '10%' }}
               />
               <div>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDateTimePicker
                       variant="inline"
@@ -148,7 +158,9 @@ class Form extends React.Component {
                       format="MM/dd/yyyy hh:mm a"
                       minDate={new Date()}
                     />
-                  </MuiPickersUtilsProvider><br/><br/>
+                  </MuiPickersUtilsProvider>
+                  <br />
+                  <br />
                   <Button
                     className={classes.button}
                     variant="contained"
@@ -158,17 +170,22 @@ class Form extends React.Component {
                     Create Campaign
                   </Button>
                 </div>
-                <div style={{textAlign: 'center', width: '80%', margin: 'auto'}}>
-                    <img src={imgSrc} alt="Choose a campaign picture to preview" style={{
-                      display: 'inline-block', 
+                <div
+                  style={{ textAlign: 'center', width: '80%', margin: 'auto' }}
+                >
+                  <img
+                    src={imgSrc}
+                    style={{
+                      display: 'inline-block',
                       width: '80%',
-                      height: 'auto', 
+                      height: 'auto',
                       marginTop: '3%',
                       marginBottom: '3%',
                       fontFamily: 'Arial',
-                    }}/>
-                    <input type="file" onChange={this.processFile} />
-                  </div>
+                    }}
+                  />
+                  <input type="file" onChange={this.processFile} />
+                </div>
               </div>
             </div>
           </form>

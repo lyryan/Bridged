@@ -19,8 +19,6 @@ const BorderLinearProgress = withStyles({
   },
 })(LinearProgress);
 
-const CAMPAIGN_STATE = ['Fundraising', 'Expired', 'Successful'];
-
 class Campaign extends React.Component {
   constructor(props) {
     super(props);
@@ -168,15 +166,20 @@ class Campaign extends React.Component {
             <div className={[styles.item, styles.creator].join(' ')}>
               {campaignDetails.campaignStarter}
             </div>
-            <div className={styles.item} style={{marginBottom: '3%'}}>
+            <div className={styles.item} style={{ marginBottom: '3%' }}>
               {/* Total Funds: {campaignDetails.totalFunded} */}
-              <span className={styles.title}>{campaignDetails.totalFunded} Ethers</span> 
-              <span className={styles.grey} style={{fontSize: '110%'}}> of {campaignDetails.goalAmount} Ethers goal</span>
+              <span className={styles.title}>
+                {campaignDetails.totalFunded} Ethers
+              </span>
+              <span className={styles.grey} style={{ fontSize: '110%' }}>
+                {' '}
+                of {campaignDetails.goalAmount} Ethers goal
+              </span>
             </div>
             {/* <div className={styles.item}>
               Funding Goal: {campaignDetails.goalAmount}
             </div> */}
-            
+
             <BorderLinearProgress
               className={styles.progressBar}
               variant="determinate"
@@ -189,36 +192,43 @@ class Campaign extends React.Component {
               }
             />
             <div className={styles.buttons}>
-              <input
-                type="number"
-                value={fundAmount}
-                onChange={this.handleChange}
-                name="fundAmount"
-                className={styles.donate}
-              />
-              <button
-                type="button"
-                className={styles.button}
-                onClick={this.fundCampaign}
-                disabled={campaignDetails.currentState !== 0}
-              >
-                Contribute
-              </button>
-              <button
-                type="button"
-                className={styles.button}
-                onClick={this.getRefund}
-                disabled={campaignDetails.currentState !== 1}
-              >
-                Get Refund
-              </button>
+              {campaignDetails.currentState === 0 ? (
+                <>
+                  <input
+                    type="number"
+                    value={fundAmount}
+                    onChange={this.handleChange}
+                    name="fundAmount"
+                    className={styles.donate}
+                  />
+                  <button
+                    type="button"
+                    className={styles.button}
+                    onClick={this.fundCampaign}
+                    disabled={campaignDetails.currentState !== 0}
+                  >
+                    Contribute
+                  </button>
+                </>
+              ) : null}
+              {campaignDetails.currentState !== 0 ? (
+                <button
+                  type="button"
+                  className={styles.button}
+                  onClick={this.getRefund}
+                  disabled={campaignDetails.currentState !== 1}
+                >
+                  Get Refund
+                </button>
+              ) : null}
             </div>
             <div className={[styles.item, styles.date].join(' ')}>
               Expires {campaignDetails.deadline}
             </div>
           </div>
           <div className={styles.itemImage}>
-            <img className={styles.campaignPicture}
+            <img
+              className={styles.campaignPicture}
               alt="campaign"
               src={`https://ipfs.io/ipfs/${campaignDetails._photoHash}`}
             />
