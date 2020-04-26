@@ -133,7 +133,8 @@ class Explore extends React.Component {
                 <div
                   style={{
                     width: '110px',
-                    height: '75px',
+                    minHeight: '75px',
+                    maxHeight: '75px',
                     backgroundColor: 'lightGray',
                   }}
                 >
