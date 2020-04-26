@@ -114,7 +114,7 @@ class Explore extends React.Component {
           <div className={styles.center}>
             <div
               style={{
-                width: '260px',
+                width: '230px',
                 border: '1px solid grey',
               }}
             >
