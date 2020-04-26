@@ -142,7 +142,7 @@ class Explore extends React.Component {
             <div>
               {searchResults.length > 0 ? this.renderSearchResults() : null}
             </div>
-            <h3>Campaigns</h3>
+            <h3 className={styles.header}>Campaigns</h3>
             <div className={styles.cardContainer}>
               {this.showAllCampaigns()}
             </div>

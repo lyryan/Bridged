@@ -74,7 +74,7 @@ const Card = props => {
   return (
     <div className={styles.card}>
       <div className={styles.campaignImage}>
-        <img alt="campaign" src={`https://ipfs.io/ipfs/${campaignHash}`} />
+        <img className={styles.image} alt="campaign" src={`https://ipfs.io/ipfs/${campaignHash}`} />
       </div>
       <div className={styles.item}>
         <div className={styles.mainHeading}>Campaign</div>

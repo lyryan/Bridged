@@ -218,7 +218,7 @@ class Campaign extends React.Component {
             </div>
           </div>
           <div className={styles.itemImage}>
-            <img
+            <img className={styles.campaignPicture}
               alt="campaign"
               src={`https://ipfs.io/ipfs/${campaignDetails._photoHash}`}
             />

@@ -51,12 +51,7 @@
   margin-bottom: 7px;
 }
 
-.campaignImage img {
-  max-height: auto;
-  max-width: 100%;
-}
-
-.campaignImage img {
+.image {
   height: 100%;
 }
 
