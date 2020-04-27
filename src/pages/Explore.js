@@ -1,9 +1,53 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import { withStyles } from '@material-ui/core/styles';
+
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
+import Suggestions from '../components/search-results';
 import styles from './Explore.module.css';
+
+const useStyles = theme => ({
+  searchContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    height: '30px',
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: '#f7f7f7',
+    '&:hover': {
+      backgroundColor: '#f7f7f7',
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '500px',
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+    width: '500px',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+  },
+});
 
 const getFilteredList = (arr, input) => {
   if (input === '') return [];
@@ -107,40 +151,50 @@ class Explore extends React.Component {
     this.setState({ searchInput: input, searchResults });
   };
 
-  renderSearchResults = () => {
-    const { searchResults } = this.state;
-    return searchResults.map(element => {
-      return (
-        <div key={element.address}>
-          <Link to={`/campaigns/${element.address}`}>
-            Title: {element.campaignTitle}
-            <br />
-            Creator:
-            <br /> {element.address}
-          </Link>
-        </div>
-      );
-    });
-  };
+  // renderSearchResults = () => {
+  //   const { searchResults } = this.state;
+  //   return searchResults.map(element => {
+  //     return (
+  //       <div key={element.address}>
+  //         <Link to={`/campaigns/${element.address}`}>
+  //           Title: {element.campaignTitle}
+  //           <br />
+  //           Creator:
+  //           <br /> {element.address}
+  //         </Link>
+  //       </div>
+  //     );
+  //   });
+  // };
 
   render() {
     const { searchInput, searchResults, loading } = this.state;
+    const { classes } = this.props;
+
     return (
       <div>
         {loading ? (
           <CircularProgress />
         ) : (
-          <div>
-            <form>
-              <input
-                type="text"
-                placeholder="Search Campaigns..."
-                onChange={this.handleChange}
-                value={searchInput}
-              />
-            </form>
-            <div>
-              {searchResults.length > 0 ? this.renderSearchResults() : null}
+          <div style={{ marginTop: '20px' }}>
+            <div className={classes.searchContainer}>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                  onChange={this.handleChange}
+                />
+                {searchInput.length ? (
+                  <Suggestions searchResults={searchResults} />
+                ) : null}
+              </div>
             </div>
             <h3 className={styles.header}>Campaigns</h3>
             <div className={styles.cardContainer}>
@@ -153,4 +207,4 @@ class Explore extends React.Component {
   }
 }
 
-export default Explore;
+export default withStyles(useStyles, { withTheme: true })(Explore);

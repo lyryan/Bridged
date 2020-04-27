@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Button from '@material-ui/core/Button';
@@ -31,7 +31,7 @@ const responsive = {
   },
 };
 
-const ColorButton = withStyles(({
+const ColorButton = withStyles({
   root: {
     fontFamily: 'Arial',
     fontWeight: '900',
@@ -42,7 +42,7 @@ const ColorButton = withStyles(({
       backgroundColor: 'rgba(75, 161, 115, 0.5)',
     },
   },
-}))(Button);
+})(Button);
 
 const CustomButtonGroupAsArrows = ({ next, previous }) => {
   return (
@@ -53,8 +53,20 @@ const CustomButtonGroupAsArrows = ({ next, previous }) => {
         justifyContent: 'space-between',
       }}
     >
-      <Button type="button" className={styles.arrow} style={{position: 'absolute', left: '12%'}}><img src={prevIcon}  alt="prev" onClick={previous}/></Button>
-      <Button type="button" className={styles.arrow} style={{position: 'absolute', right: '12%'}}><img src={nextIcon}  alt="next" onClick={next} /></Button>
+      <Button
+        type="button"
+        className={styles.arrow}
+        style={{ position: 'absolute', left: '12%' }}
+      >
+        <img src={prevIcon} alt="prev" onClick={previous} />
+      </Button>
+      <Button
+        type="button"
+        className={styles.arrow}
+        style={{ position: 'absolute', right: '12%' }}
+      >
+        <img src={nextIcon} alt="next" onClick={next} />
+      </Button>
     </div>
   );
 };
@@ -127,7 +139,7 @@ class Home extends React.Component {
       const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
         <div className={styles.card}>
-          <Card 
+          <Card
             key={el.address}
             campaignHash={el._photoHash}
             campaignTitle={el.campaignTitle}
@@ -145,6 +157,7 @@ class Home extends React.Component {
   };
 
   render() {
+
     return (
       <div>
         <div className={styles.top}>
@@ -169,8 +182,8 @@ class Home extends React.Component {
 
         <div className={styles.middle}>
           <h3>Featured Campaigns</h3>
-          <div className={styles.carousel}> 
-            <Carousel 
+          <div className={styles.carousel}>
+            <Carousel
               // autoPlay
               // autoPlaySpeed={3000}
               // transitionDuration={500}
