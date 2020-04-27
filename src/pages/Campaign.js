@@ -3,6 +3,7 @@ import { lighten, withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { campaign } from '../config';
 import styles from './Campaign.module.css';
+import Loader from '../components/loader';
 
 const BorderLinearProgress = withStyles({
   root: {
@@ -37,6 +38,7 @@ class Campaign extends React.Component {
         _photoHash: '',
       },
       fundAmount: 0,
+      loading: true,
     };
   }
 
@@ -70,7 +72,7 @@ class Campaign extends React.Component {
 
   getCampaign = async () => {
     const { web3, match } = this.props;
-
+    this.setState({ loading: true });
     const campaignAddress = match.params.address;
     const campaignInst = new web3.eth.Contract(campaign.ABI, campaignAddress);
     const campaignDetails = await campaignInst.methods.getDetails().call();
@@ -93,7 +95,7 @@ class Campaign extends React.Component {
       'ether',
     );
     campaignDetails.currentState = parseInt(campaignDetails.currentState, 10);
-    this.setState({ campaignDetails });
+    this.setState({ campaignDetails }, this.setState({ loading: false }));
   };
 
   fundCampaign = () => {
@@ -141,98 +143,115 @@ class Campaign extends React.Component {
   };
 
   render() {
-    const { campaignDetails, fundAmount } = this.state;
-    console.log(this.state);
+    const { campaignDetails, fundAmount, loading } = this.state;
+    let status = (
+      <div className={styles.fundraising}>
+        Expires {campaignDetails.deadline}
+      </div>
+    );
+    if (campaignDetails.currentState === 1) {
+      status = <div className={styles.expired}>Expired</div>;
+    } else if (campaignDetails.currentState === 2) {
+      status = <div className={styles.succeeded}>Succeeded</div>;
+    }
     return (
       <>
         <div className={styles.container}>
-          <div className={styles.info}>
-            {/* <div className={styles.item}>
+          {loading ? (
+            <div className={styles.container}>
+              <Loader />
+            </div>
+          ) : (
+            <>
+              <div className={styles.info}>
+                {status}
+                {/* <div className={styles.item}>
               State: {CAMPAIGN_STATE[campaignDetails.currentState]}
             </div> */}
-            <div className={[styles.item, styles.title].join(' ')}>
-              {campaignDetails.campaignTitle}
-            </div>
-            {/* <div className={styles.item}>
+                <div className={[styles.item, styles.title].join(' ')}>
+                  {campaignDetails.campaignTitle}
+                </div>
+                {/* <div className={styles.item}>
               Campaign Address: {campaignDetails.address}
             </div> */}
-            <div className={[styles.item, styles.description].join(' ')}>
-              {campaignDetails.campaignDesc}
-            </div>
-            <div className={[styles.item, styles.grey].join(' ')}>
-              {/* Creator Address: {campaignDetails.campaignStarter} */}
-              Created by:
-            </div>
-            <div className={[styles.item, styles.creator].join(' ')}>
-              {campaignDetails.campaignStarter}
-            </div>
-            <div className={styles.item} style={{ marginBottom: '3%' }}>
-              {/* Total Funds: {campaignDetails.totalFunded} */}
-              <span className={styles.title}>
-                {campaignDetails.totalFunded} Ethers
-              </span>
-              <span className={styles.grey} style={{ fontSize: '110%' }}>
-                {' '}
-                of {campaignDetails.goalAmount} Ethers goal
-              </span>
-            </div>
-            {/* <div className={styles.item}>
+                <div className={[styles.item, styles.description].join(' ')}>
+                  {campaignDetails.campaignDesc}
+                </div>
+                <div className={[styles.item, styles.grey].join(' ')}>
+                  {/* Creator Address: {campaignDetails.campaignStarter} */}
+                  Created by:
+                </div>
+                <div className={[styles.item, styles.creator].join(' ')}>
+                  {campaignDetails.campaignStarter}
+                </div>
+
+                <div className={styles.item} style={{ marginBottom: '3%' }}>
+                  {/* Total Funds: {campaignDetails.totalFunded} */}
+                  <span className={styles.title}>
+                    {campaignDetails.totalFunded} Ethers
+                  </span>
+                  <span className={styles.grey} style={{ fontSize: '110%' }}>
+                    {' '}
+                    of {campaignDetails.goalAmount} Ethers goal
+                  </span>
+                </div>
+                {/* <div className={styles.item}>
               Funding Goal: {campaignDetails.goalAmount}
             </div> */}
 
-            <BorderLinearProgress
-              className={styles.progressBar}
-              variant="determinate"
-              color="secondary"
-              value={
-                campaignDetails.totalFunded / campaignDetails.goalAmount > 1
-                  ? 100
-                  : (campaignDetails.totalFunded / campaignDetails.goalAmount) *
-                    100
-              }
-            />
-            <div className={styles.buttons}>
-              {campaignDetails.currentState === 0 ? (
-                <>
-                  <input
-                    type="number"
-                    value={fundAmount}
-                    onChange={this.handleChange}
-                    name="fundAmount"
-                    className={styles.donate}
-                  />
-                  <button
-                    type="button"
-                    className={styles.button}
-                    onClick={this.fundCampaign}
-                    disabled={campaignDetails.currentState !== 0}
-                  >
-                    Contribute
-                  </button>
-                </>
-              ) : null}
-              {campaignDetails.currentState !== 0 ? (
-                <button
-                  type="button"
-                  className={styles.button}
-                  onClick={this.getRefund}
-                  disabled={campaignDetails.currentState !== 1}
-                >
-                  Get Refund
-                </button>
-              ) : null}
-            </div>
-            <div className={[styles.item, styles.date].join(' ')}>
-              Expires {campaignDetails.deadline}
-            </div>
-          </div>
-          <div className={styles.itemImage}>
-            <img
-              className={styles.campaignPicture}
-              alt="campaign"
-              src={`https://ipfs.io/ipfs/${campaignDetails._photoHash}`}
-            />
-          </div>
+                <BorderLinearProgress
+                  className={styles.progressBar}
+                  variant="determinate"
+                  color="secondary"
+                  value={
+                    campaignDetails.totalFunded / campaignDetails.goalAmount > 1
+                      ? 100
+                      : (campaignDetails.totalFunded /
+                          campaignDetails.goalAmount) *
+                        100
+                  }
+                />
+                <div className={styles.buttons}>
+                  {campaignDetails.currentState === 0 ? (
+                    <>
+                      <input
+                        type="number"
+                        value={fundAmount}
+                        onChange={this.handleChange}
+                        name="fundAmount"
+                        className={styles.donate}
+                      />
+                      <button
+                        type="button"
+                        className={styles.button}
+                        onClick={this.fundCampaign}
+                        disabled={campaignDetails.currentState !== 0}
+                      >
+                        Contribute
+                      </button>
+                    </>
+                  ) : null}
+                  {campaignDetails.currentState !== 0 ? (
+                    <button
+                      type="button"
+                      className={styles.button}
+                      onClick={this.getRefund}
+                      disabled={campaignDetails.currentState !== 1}
+                    >
+                      Get Refund
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+              <div className={styles.itemImage}>
+                <img
+                  className={styles.campaignPicture}
+                  alt="campaign"
+                  src={`https://ipfs.io/ipfs/${campaignDetails._photoHash}`}
+                />
+              </div>
+            </>
+          )}
         </div>
       </>
     );

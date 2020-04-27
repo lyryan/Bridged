@@ -47,6 +47,27 @@
   margin-bottom: 15%;
 }
 
+.fundraising {
+  font-size: 95%;
+  color: #666666;
+  font-family: 'Helvetica';
+  font-weight: 300;
+}
+
+.succeeded {
+  font-size: 95%;
+  color: rgb(10, 129, 10);
+  font-family: 'Helvetica';
+  font-weight: 300;
+}
+
+.expired {
+  font-size: 95%;
+  color: rgb(211, 11, 11);
+  font-family: 'Helvetica';
+  font-weight: 300;
+}
+
 .progressBar {
   margin-bottom: 5%;
 }
