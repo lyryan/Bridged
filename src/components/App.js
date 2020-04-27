@@ -86,9 +86,7 @@ class App extends React.Component {
     return (
       <>
         <Header
-          handleLogIn={() => {
-            this.login();
-          }}
+          handleLogIn={this.login}
           isLoggedIn={isLoggedIn}
           account={account}
           balance={balance}

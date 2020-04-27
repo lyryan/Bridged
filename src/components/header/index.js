@@ -141,7 +141,14 @@ const PrimarySearchAppBar = props => {
           My account
         </Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose && logout}>Sign Out</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          logout();
+        }}
+      >
+        Sign Out
+      </MenuItem>
     </Menu>
   );
 
