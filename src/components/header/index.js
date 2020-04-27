@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Link,
-  Route,
-  Switch,
-  withRouter,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -26,13 +20,14 @@ import Home from '../../pages/Home';
 
 const useStyles = makeStyles(theme => ({
   colorPrimary: {
-    backgroundColor: '#F6F6F6',
-    color: '#F6F6F6',
+    backgroundColor: '#2A2D33',
+    color: '#2A2D33',
   },
   navItem: {
     fontWeight: 800,
-    color: '#2A2D33',
+    color: '#FFFFFF',
     marginRight: '20px',
+    fontSize: '75%',
   },
   nav: {
     display: 'flex',
@@ -276,13 +271,9 @@ const PrimarySearchAppBar = props => {
           </Route>
           <Route
             path="/campaigns/:address"
-            component={withRouter(({ ...childProps }) => (
-              <Campaign
-                match={childProps.match}
-                web3={web3}
-                account={account}
-              />
-            ))}
+            render={routeProps => (
+              <Campaign web3={web3} {...routeProps} account={account} />
+            )}
           />
         </Switch>
       </div>

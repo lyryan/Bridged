@@ -82,18 +82,20 @@ class Explore extends React.Component {
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
       const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
-        <Card
-          key={el.address}
-          campaignHash={el._photoHash}
-          campaignTitle={el.campaignTitle}
-          campaignDesc={el.campaignDesc}
-          campaignCreator={el.campaignStarter}
-          expiryDate={expiryDate}
-          totalFunded={totalFunded}
-          fundingGoal={goalAmount}
-          backers={el.backers}
-          route={`/campaigns/${el.address}`}
-        />
+        <div className={styles.card}>
+          <Card
+            key={el.address}
+            campaignHash={el._photoHash}
+            campaignTitle={el.campaignTitle}
+            campaignDesc={el.campaignDesc}
+            campaignCreator={el.campaignStarter}
+            expiryDate={expiryDate}
+            totalFunded={totalFunded}
+            fundingGoal={goalAmount}
+            backers={el.backers}
+            route={`/campaigns/${el.address}`}
+          />
+        </div>
       );
     });
   };
@@ -140,6 +142,7 @@ class Explore extends React.Component {
             <div>
               {searchResults.length > 0 ? this.renderSearchResults() : null}
             </div>
+            <h3 className={styles.header}>Campaigns</h3>
             <div className={styles.cardContainer}>
               {this.showAllCampaigns()}
             </div>

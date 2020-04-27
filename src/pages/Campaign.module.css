@@ -1,33 +1,91 @@
 .container {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  height: 600px;
+  min-height: 70vh;
   width: 100%;
   background-color: #f6f6f6;
 }
 
+.info {
+  position: relative;
+  max-width: 40%;
+  left: 7%;
+  margin: 2%;
+}
+
 .item {
-  margin: 10px 0;
-  font-size: 20px;
+  overflow-wrap: break-word;
+  font-family: 'Helvetica';
+  font-weight: 300;
 }
 
-.itemImage {
-  margin: 0 30px;
+.title {
+  font-family: Arial, sans-serif;
+  font-size: 200%;
+  font-weight: bold;
+  color: #26282d;
+  margin-bottom: 1%;
+}
+
+.description {
+  font-size: 125%;
+  word-spacing: 0.05em;
+  margin-bottom: 10%;
+}
+
+.grey {
+  font-size: 95%;
+  color: #666666;
+}
+
+.creator {
+  font-family: 'Arial';
+  font-weight: bold;
+  font-size: 100%;
+  color: #26282d;
+  margin-bottom: 15%;
+}
+
+.fundraising {
+  font-size: 95%;
+  color: #666666;
+  font-family: 'Helvetica';
+  font-weight: 300;
+}
+
+.succeeded {
+  font-size: 95%;
+  color: rgb(10, 129, 10);
+  font-family: 'Helvetica';
+  font-weight: 300;
+}
+
+.expired {
+  font-size: 95%;
+  color: rgb(211, 11, 11);
+  font-family: 'Helvetica';
+  font-weight: 300;
+}
+
+.progressBar {
+  margin-bottom: 5%;
+}
+
+.buttons {
   display: flex;
-  justify-content: center;
   align-items: center;
-  overflow: hidden;
 }
 
-.itemImage img {
-  flex-shrink: 0;
-  max-width: 350px;
-  max-height: 100%;
+.donate {
+  font-size: 150%;
+  width: 20%;
+  padding: 2% 0;
+  text-align: center;
 }
 
 .button {
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   font-size: 15px;
   border: none;
   width: 40%;
@@ -36,6 +94,7 @@
   background-color: #57aa7c;
   text-align: center;
   cursor: pointer;
+  justify-self: space-evenly;
 }
 
 .button[type='button']:disabled {
@@ -46,4 +105,23 @@
 
 .button:hover {
   opacity: 0.7;
+}
+
+.date {
+  margin-top: 5%;
+  font-size: 110%;
+  font-weight: bold;
+}
+
+.itemImage {
+  margin: 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  max-width: 30%;
+}
+
+.campaignPicture {
+  max-width: 75%;
 }
