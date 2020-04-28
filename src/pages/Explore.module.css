@@ -6,6 +6,7 @@
   flex-flow: row wrap;
   max-width: 900px;
   margin: 0 auto;
+  z-index: -1;
 }
 
 .header {
@@ -16,4 +17,5 @@
   font-size: 185%;
   color: #26282d;
   margin-bottom: 3%;
+  z-index: -1;
 }

@@ -19,7 +19,7 @@ const customNodeOptions = {
 };
 
 const fm = new Fortmatic(process.env.FORTMATIC_KEY, customNodeOptions);
-
+const isUserLoggedIn = fm.user.isLoggedIn();
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +34,8 @@ class App extends React.Component {
   }
 
   componentDidMount = async () => {
-    console.log(fm.getProvider());
+    this.setState({ isLoggedIn: isUserLoggedIn });
+
     const web3 = await new Web3(fm.getProvider());
     const ipfs = new Ipfs({
       host: 'ipfs.infura.io',
@@ -42,14 +43,10 @@ class App extends React.Component {
       protocol: 'https',
     });
 
-    await this.setState({ web3, ipfs });
-
-    const isUserLoggedIn = await fm.user.isLoggedIn();
-    if (isUserLoggedIn) {
-      this.getUserData();
-    }
-    this.setState({
-      isLoggedIn: isUserLoggedIn,
+    this.setState({ web3, ipfs }, () => {
+      if (isUserLoggedIn) {
+        this.getUserData();
+      }
     });
   };
 
@@ -91,40 +88,40 @@ class App extends React.Component {
   render() {
     const { isLoggedIn, account, balance, email, web3, ipfs } = this.state;
     return (
-        <Router>
-          <Header
-            handleLogIn={this.login}
-            isLoggedIn={isLoggedIn}
-            account={account}
-            balance={balance}
-            email={email}
-            logout={() => {
-              this.logout();
-            }}
-            web3={web3}
-            ipfs={ipfs}
+      <Router>
+        <Header
+          handleLogIn={this.login}
+          isLoggedIn={isLoggedIn}
+          account={account}
+          balance={balance}
+          email={email}
+          logout={() => {
+            this.logout();
+          }}
+          web3={web3}
+          ipfs={ipfs}
+        />
+        <Switch>
+          <Route exact path="/">
+            <Home web3={web3} />
+          </Route>
+          <Route path="/create-campaign">
+            <CreateCampaigns account={account} web3={web3} ipfs={ipfs} />
+          </Route>
+          <Route path="/explore">
+            <Explore web3={web3} />
+          </Route>
+          <Route
+            path="/campaigns/:address"
+            render={routeProps => (
+              <Campaign web3={web3} {...routeProps} account={account} />
+            )}
           />
-          <Switch>
-            <Route exact path="/">
-              <Home web3={web3} />
-            </Route>
-            <Route path="/create-campaign">
-              <CreateCampaigns account={account} web3={web3} ipfs={ipfs} />
-            </Route>
-            <Route path="/explore">
-              <Explore web3={web3} />
-            </Route>
-            <Route
-              path="/campaigns/:address"
-              render={routeProps => (
-                <Campaign web3={web3} {...routeProps} account={account} />
-              )}
-            />
-            <Route path="/my-account">
-              <MyAccount account={account} email={email} balance={balance} />
-            </Route>
-          </Switch>
-        </Router>
+          <Route path="/my-account">
+            <MyAccount account={account} email={email} balance={balance} />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }

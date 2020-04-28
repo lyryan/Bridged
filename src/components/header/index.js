@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
   colorDark: {
     backgroundColor: '#2A2D33',
     color: '#FFFFFF',
+    boxShadow: 'none',
   },
   logoPrimary: {
     fill: '#FFFFFF',
@@ -29,6 +30,11 @@ const useStyles = makeStyles(theme => ({
   navItem: {
     fontWeight: 800,
     color: '#2A2D33',
+    marginRight: '20px',
+  },
+  navDark: {
+    fontWeight: 800,
+    color: '#FFFFFF',
     marginRight: '20px',
   },
   nav: {
@@ -101,6 +107,8 @@ const PrimarySearchAppBar = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const location = useLocation();
+
   const isMenuOpen = Boolean(anchorEl);
   const { handleLogIn, isLoggedIn, logout } = props;
 
@@ -154,12 +162,26 @@ const PrimarySearchAppBar = props => {
           <div className={classes.grow}>
             <div className={classes.nav}>
               <Link style={{ textDecoration: 'none' }} to="/explore">
-                <Typography className={classes.navItem} variant="subtitle1">
+                <Typography
+                  className={
+                    location.pathname === '/'
+                      ? classes.navDark
+                      : classes.navItem
+                  }
+                  variant="subtitle1"
+                >
                   Explore
                 </Typography>
               </Link>
               <Link style={{ textDecoration: 'none' }} to="/create-campaign">
-                <Typography className={classes.navItem} variant="subtitle1">
+                <Typography
+                  className={
+                    location.pathname === '/'
+                      ? classes.navDark
+                      : classes.navItem
+                  }
+                  variant="subtitle1"
+                >
                   Start a Campaign
                 </Typography>
               </Link>
@@ -196,7 +218,13 @@ const PrimarySearchAppBar = props => {
                   onClick={handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  <AccountCircle
+                    className={
+                      location.pathname === '/'
+                        ? classes.logoPrimary
+                        : 'inherit'
+                    }
+                  />
                 </IconButton>
               ) : (
                 <Button

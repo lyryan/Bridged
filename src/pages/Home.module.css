@@ -1,7 +1,7 @@
 .top {
   display: flex;
   height: 550px;
-  background-color: #26282d;
+  background-color: #2a2d33;
   align-items: center;
   justify-content: space-evenly;
   transition: height 0.2s;
