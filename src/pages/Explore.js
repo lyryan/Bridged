@@ -1,5 +1,4 @@
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -7,6 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { crowdfunding, campaign } from '../config';
 import Card from '../components/card';
+import Loader from '../components/loader';
 import Suggestions from '../components/search-results';
 import styles from './Explore.module.css';
 
@@ -174,7 +174,9 @@ class Explore extends React.Component {
     return (
       <div>
         {loading ? (
-          <CircularProgress />
+          <div className={styles.loaderContainer}>
+            <Loader />
+          </div>
         ) : (
           <div style={{ marginTop: '20px' }}>
             <div className={classes.searchContainer}>

@@ -9,6 +9,22 @@
   z-index: -1;
 }
 
+/*.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  width: 100%;
+}*/
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  width: 100%;
+}
+
 .header {
   position: relative;
   left: 20%;

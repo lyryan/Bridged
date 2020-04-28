@@ -19,7 +19,7 @@ const customNodeOptions = {
 };
 
 const fm = new Fortmatic(process.env.FORTMATIC_KEY, customNodeOptions);
-const isUserLoggedIn = fm.user.isLoggedIn();
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +34,7 @@ class App extends React.Component {
   }
 
   componentDidMount = async () => {
+    const isUserLoggedIn = await fm.user.isLoggedIn();
     this.setState({ isLoggedIn: isUserLoggedIn });
 
     const web3 = await new Web3(fm.getProvider());
