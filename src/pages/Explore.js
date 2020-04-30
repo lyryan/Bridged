@@ -25,7 +25,7 @@ const useStyles = theme => ({
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: '500px',
+    width: '400px',
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -38,10 +38,9 @@ const useStyles = theme => ({
   },
   inputRoot: {
     color: 'inherit',
-    width: '500px',
+    width: '400px',
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
@@ -55,8 +54,9 @@ const getFilteredList = (arr, input) => {
   // filter by address, campaign title or name of campaign creator
   return arr.filter(element => {
     if (
-      element.address.substring(0, len) === input ||
-      element.campaignTitle.substring(0, len) === input
+      //element.address.substring(0, len).toLowerCase() === input.toLowerCase() ||
+      element.campaignTitle.substring(0, len).toLowerCase() ===
+      input.toLowerCase()
     )
       return element;
     return null;
