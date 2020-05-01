@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   nav: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   logIn: {
     color: '#4BA173',
