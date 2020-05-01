@@ -138,20 +138,18 @@ class Home extends React.Component {
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
       const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
-        <div className={styles.card}>
-          <Card
-            key={el.address}
-            campaignHash={el._photoHash}
-            campaignTitle={el.campaignTitle}
-            campaignDesc={el.campaignDesc}
-            campaignCreator={el.campaignStarter}
-            expiryDate={expiryDate}
-            totalFunded={totalFunded}
-            fundingGoal={goalAmount}
-            backers={el.backers}
-            route={`/campaigns/${el.address}`}
-          />
-        </div>
+        <Card
+          key={el.address}
+          campaignHash={el._photoHash}
+          campaignTitle={el.campaignTitle}
+          campaignDesc={el.campaignDesc}
+          campaignCreator={el.campaignStarter}
+          expiryDate={expiryDate}
+          totalFunded={totalFunded}
+          fundingGoal={goalAmount}
+          backers={el.backers}
+          route={`/campaigns/${el.address}`}
+        />
       );
     });
   };

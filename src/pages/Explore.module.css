@@ -6,6 +6,23 @@
   flex-flow: row wrap;
   max-width: 900px;
   margin: 0 auto;
+  z-index: -1;
+}
+
+/*.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  width: 100%;
+}*/
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  width: 100%;
 }
 
 .header {
@@ -16,4 +33,5 @@
   font-size: 185%;
   color: #26282d;
   margin-bottom: 3%;
+  z-index: -1;
 }

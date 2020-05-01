@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,11 +10,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Logo from '../../svg/logo-black.svg';
-import CreateCampaigns from '../../pages/CreateCampaigns';
-import Explore from '../../pages/Explore';
-import MyAccount from '../../pages/MyAccount';
-import Campaign from '../../pages/Campaign';
-import Home from '../../pages/Home';
 
 const useStyles = makeStyles(theme => ({
   colorPrimary: {
@@ -24,15 +19,27 @@ const useStyles = makeStyles(theme => ({
   colorDark: {
     backgroundColor: '#2A2D33',
     color: '#FFFFFF',
+    boxShadow: 'none',
+  },
+  logoPrimary: {
+    fill: '#FFFFFF',
+  },
+  logoDark: {
+    fill: '#2A2D33',
   },
   navItem: {
     fontWeight: 800,
     color: '#2A2D33',
     marginRight: '20px',
   },
+  navDark: {
+    fontWeight: 800,
+    color: '#FFFFFF',
+    marginRight: '20px',
+  },
   nav: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   logIn: {
     color: '#4BA173',
@@ -100,17 +107,10 @@ const PrimarySearchAppBar = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const location = useLocation();
+
   const isMenuOpen = Boolean(anchorEl);
-  const {
-    handleLogIn,
-    isLoggedIn,
-    logout,
-    account,
-    web3,
-    ipfs,
-    email,
-    balance,
-  } = props;
+  const { handleLogIn, isLoggedIn, logout } = props;
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -151,87 +151,96 @@ const PrimarySearchAppBar = props => {
   );
 
   return (
-    <Router>
-      <div>
-        <AppBar className={classes.colorPrimary} position="static">
-          <Toolbar>
-            <div className={classes.grow}>
-              <div className={classes.nav}>
-                <Link style={{ textDecoration: 'none' }} to="/explore">
-                  <Typography className={classes.navItem} variant="subtitle1">
-                    Explore
-                  </Typography>
-                </Link>
-                <Link style={{ textDecoration: 'none' }} to="/create-campaign">
-                  <Typography className={classes.navItem} variant="subtitle1">
-                    Start a Campaign
-                  </Typography>
-                </Link>
-              </div>
+    <div>
+      <AppBar
+        className={
+          location.pathname === '/' ? classes.colorDark : classes.colorPrimary
+        }
+        position="static"
+      >
+        <Toolbar>
+          <div className={classes.grow}>
+            <div className={classes.nav}>
+              <Link style={{ textDecoration: 'none' }} to="/explore">
+                <Typography
+                  className={
+                    location.pathname === '/'
+                      ? classes.navDark
+                      : classes.navItem
+                  }
+                  variant="subtitle1"
+                >
+                  Explore
+                </Typography>
+              </Link>
+              <Link style={{ textDecoration: 'none' }} to="/create-campaign">
+                <Typography
+                  className={
+                    location.pathname === '/'
+                      ? classes.navDark
+                      : classes.navItem
+                  }
+                  variant="subtitle1"
+                >
+                  Start a Campaign
+                </Typography>
+              </Link>
             </div>
+          </div>
 
-            <div className={classes.grow}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Link to="/">
-                  <Logo />
-                </Link>
-              </div>
+          <div className={classes.grow}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Link to="/">
+                <Logo
+                  className={
+                    location.pathname === '/'
+                      ? classes.logoPrimary
+                      : classes.logoDark
+                  }
+                />
+              </Link>
             </div>
+          </div>
 
-            <div className={classes.grow}>
-              <div className={classes.sectionDesktop}>
-                {isLoggedIn ? (
-                  <IconButton
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                    onClick={handleProfileMenuOpen}
-                    color="inherit"
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                ) : (
-                  <Button
-                    onClick={handleLogIn}
-                    className={classes.logIn}
-                    variant="outlined"
-                  >
-                    Sign In
-                  </Button>
-                )}
-              </div>
+          <div className={classes.grow}>
+            <div className={classes.sectionDesktop}>
+              {isLoggedIn ? (
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle
+                    className={
+                      location.pathname === '/'
+                        ? classes.logoPrimary
+                        : 'inherit'
+                    }
+                  />
+                </IconButton>
+              ) : (
+                <Button
+                  onClick={handleLogIn}
+                  className={classes.logIn}
+                  variant="outlined"
+                >
+                  Sign In
+                </Button>
+              )}
             </div>
-          </Toolbar>
-        </AppBar>
-        {renderMenu}
-        <Switch>
-          <Route exact path="/">
-            <Home web3={web3} />
-          </Route>
-          <Route path="/create-campaign">
-            <CreateCampaigns account={account} web3={web3} ipfs={ipfs} />
-          </Route>
-          <Route path="/explore">
-            <Explore web3={web3} />
-          </Route>
-          <Route
-            path="/campaigns/:address"
-            render={routeProps => (
-              <Campaign web3={web3} {...routeProps} account={account} />
-            )}
-          />
-          <Route path="/my-account">
-            <MyAccount account={account} email={email} balance={balance} />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+          </div>
+        </Toolbar>
+      </AppBar>
+      {renderMenu}
+    </div>
   );
 };
 

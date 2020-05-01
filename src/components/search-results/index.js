@@ -9,51 +9,60 @@ import { withStyles } from '@material-ui/core/styles';
 
 const useStyles = () => ({
   root: {
-    width: 500,
+    width: '100%',
     position: 'absolute',
   },
   menuItem: {
-    height: '70px',
+    padding: 0,
   },
 });
 
 class TypographyMenu extends React.Component {
   render() {
     const { searchResults, classes } = this.props;
+
     return (
       <Paper className={classes.root}>
-        <MenuList>
+        <MenuList className={classes.menuItem}>
           {searchResults.length ? (
-            searchResults.map(element => {
+            searchResults.map((element, index, arr) => {
               return (
-                <div>
-                  <MenuItem className={classes.menuItem}>
-                    <Link
-                      to={`/campaigns/${element.address}`}
-                      style={{ textDecoration: 'none' }}
+                <Link
+                  to={`/campaigns/${element.address}`}
+                  style={{ textDecoration: 'none' }}
+                  key={element.address}
+                >
+                  <MenuItem>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
                     >
                       <div
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
+                          width: 60,
+                          height: 50,
+                          marginRight: '7px',
                         }}
                       >
                         <img
                           style={{
-                            height: '40px',
-                            padding: '5px',
+                            objectFit: 'contain',
+                            height: '100%',
+                            width: '100%',
                           }}
                           alt="campaign"
                           src={`https://ipfs.io/ipfs/${element._photoHash}`}
                         />
-                        <div style={{ color: '#2f333a' }}>
-                          {element.campaignTitle}
-                        </div>
                       </div>
-                    </Link>
+                      <div style={{ color: '#2f333a' }}>
+                        {element.campaignTitle}
+                      </div>
+                    </div>
                   </MenuItem>
-                  <Divider />
-                </div>
+                  {index !== arr.length - 1 ? <Divider /> : null}
+                </Link>
               );
             })
           ) : (
