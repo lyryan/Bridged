@@ -48,32 +48,6 @@ const useStyles = {
 };
 
 class Form extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      imgSrc: null,
-    };
-  }
-
-  processFile = e => {
-    e.preventDefault();
-    e.stopPropagation();
-    this.setState({
-      imgSrc: URL.createObjectURL(e.target.files[0]),
-    });
-    const file = e.target.files[0];
-    const reader = new window.FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onloadend = () => this.convertToBuffer(reader);
-  };
-
-  convertToBuffer = async reader => {
-    const { setBuffer } = this.props;
-    // Convert file to a buffer to upload to IPFS
-    const buffer = await Buffer.from(reader.result);
-    setBuffer(buffer);
-  };
-
   render() {
     const {
       classes,
@@ -81,9 +55,9 @@ class Form extends React.Component {
       handleChange,
       handleSubmit,
       handleDateChange,
+      processFile,
     } = this.props;
 
-    const { imgSrc } = this.state;
     return (
       <div
         style={{
@@ -174,7 +148,7 @@ class Form extends React.Component {
                   style={{ textAlign: 'center', width: '80%', margin: 'auto' }}
                 >
                   <img
-                    src={imgSrc}
+                    src={data.imgSrc}
                     style={{
                       display: 'inline-block',
                       width: '80%',
@@ -184,7 +158,7 @@ class Form extends React.Component {
                       fontFamily: 'Arial',
                     }}
                   />
-                  <input type="file" onChange={this.processFile} />
+                  <input type="file" onChange={processFile} />
                 </div>
               </div>
             </div>

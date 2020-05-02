@@ -1,10 +1,10 @@
 .cardContainer {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
   margin: 20px;
   flex-flow: row wrap;
-  max-width: 900px;
+  width: 870px;
   margin: 0 auto;
   z-index: -1;
 }

@@ -11,6 +11,7 @@ class CreateCampaign extends React.Component {
         description: '',
         fundingGoal: '',
         selectedDeadline: new Date().setSeconds(0),
+        imgSrc: null,
       },
       buffer: '',
     };
@@ -36,6 +37,29 @@ class CreateCampaign extends React.Component {
     this.startCampaign();
   };
 
+  convertToBuffer = async reader => {
+    // Convert file to a buffer to upload to IPFS
+    const buffer = await Buffer.from(reader.result);
+    this.setState({ buffer });
+  };
+
+  processFile = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const formData = this.state.formData;
+
+    formData.imgSrc = URL.createObjectURL(e.target.files[0]);
+    this.setState(
+      { formData },
+      console.log('this is the new state', this.state),
+    );
+
+    const file = e.target.files[0];
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onloadend = () => this.convertToBuffer(reader);
+  };
+
   pushToIPFS = () => {
     const { ipfs } = this.props;
     return new Promise((resolve, reject) => {
@@ -45,10 +69,6 @@ class CreateCampaign extends React.Component {
         return resolve(ipfsHash[0].hash);
       });
     });
-  };
-
-  setBuffer = buffer => {
-    this.setState({ buffer });
   };
 
   startCampaign = async () => {
@@ -81,6 +101,16 @@ class CreateCampaign extends React.Component {
           campaign.ABI,
           res.events.CampaignCreated.returnValues.contractAddress,
         );
+
+        const resetForm = {
+          title: '',
+          description: '',
+          fundingGoal: '',
+          selectedDeadline: new Date().setSeconds(0),
+          imgSrc: null,
+        };
+
+        this.setState({ formData: resetForm, buffer: '' });
       });
   };
 
@@ -100,7 +130,7 @@ class CreateCampaign extends React.Component {
             data={formData}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
-            setBuffer={this.setBuffer}
+            processFile={this.processFile}
             handleDateChange={this.handleDateChange}
           />
         </div>
