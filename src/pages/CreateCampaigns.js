@@ -47,6 +47,10 @@ class CreateCampaign extends React.Component {
     });
   };
 
+  setBuffer = buffer => {
+    this.setState({ buffer });
+  };
+
   startCampaign = async () => {
     const { web3, account } = this.props;
     const { formData } = this.state;
@@ -70,7 +74,6 @@ class CreateCampaign extends React.Component {
         from: account,
       })
       .then(res => {
-        console.log('this is the response object', res);
         const campaignInfo = res.events.CampaignCreated.returnValues; // event object
         campaignInfo.currentAmount = 0;
         campaignInfo.currentState = 0;
@@ -97,7 +100,7 @@ class CreateCampaign extends React.Component {
             data={formData}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
-            setBuffer={buffer => this.setState({ buffer })}
+            setBuffer={this.setBuffer}
             handleDateChange={this.handleDateChange}
           />
         </div>

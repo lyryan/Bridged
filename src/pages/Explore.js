@@ -46,15 +46,13 @@ const useStyles = theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
   },
-});
+})
 
 const getFilteredList = (arr, input) => {
   if (input === '') return [];
   const len = input.length;
-  // filter by address, campaign title or name of campaign creator
   return arr.filter(element => {
     if (
-      //element.address.substring(0, len).toLowerCase() === input.toLowerCase() ||
       element.campaignTitle.substring(0, len).toLowerCase() ===
       input.toLowerCase()
     )
@@ -63,7 +61,7 @@ const getFilteredList = (arr, input) => {
   });
 };
 
-class Explore extends React.Component {
+class Explore extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -100,7 +98,6 @@ class Explore extends React.Component {
       .returnAllCampaigns()
       .call()
       .then(async allCampaigns => {
-        console.log('these are all the campaigns being returned', allCampaigns);
         const promises = allCampaigns.map(async campaignAddress => {
           const campaignInst = new web3.eth.Contract(
             campaign.ABI,
@@ -126,9 +123,8 @@ class Explore extends React.Component {
       const goalAmount = web3.utils.fromWei(el.goalAmount, 'ether'); // convert wei to ether
       const totalFunded = web3.utils.fromWei(el.totalFunded, 'ether'); // convert wei to ether
       return (
-        <div className={styles.card}>
+        <div className={styles.card} key={el.address}>
           <Card
-            key={el.address}
             campaignHash={el._photoHash}
             campaignTitle={el.campaignTitle}
             campaignDesc={el.campaignDesc}
@@ -151,21 +147,6 @@ class Explore extends React.Component {
     this.setState({ searchInput: input, searchResults });
   };
 
-  // renderSearchResults = () => {
-  //   const { searchResults } = this.state;
-  //   return searchResults.map(element => {
-  //     return (
-  //       <div key={element.address}>
-  //         <Link to={`/campaigns/${element.address}`}>
-  //           Title: {element.campaignTitle}
-  //           <br />
-  //           Creator:
-  //           <br /> {element.address}
-  //         </Link>
-  //       </div>
-  //     );
-  //   });
-  // };
 
   render() {
     const { searchInput, searchResults, loading } = this.state;

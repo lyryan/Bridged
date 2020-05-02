@@ -20,7 +20,7 @@ const customNodeOptions = {
 
 const fm = new Fortmatic(process.env.FORTMATIC_KEY, customNodeOptions);
 
-class App extends React.Component {
+class App extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,16 +35,15 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     const isUserLoggedIn = await fm.user.isLoggedIn();
-    this.setState({ isLoggedIn: isUserLoggedIn });
 
-    const web3 = await new Web3(fm.getProvider());
+    const web3 = new Web3(fm.getProvider());
     const ipfs = new Ipfs({
       host: 'ipfs.infura.io',
       port: 5001,
       protocol: 'https',
     });
 
-    this.setState({ web3, ipfs }, () => {
+    this.setState({ web3, ipfs, isLoggedIn: isUserLoggedIn }, () => {
       if (isUserLoggedIn) {
         this.getUserData();
       }
@@ -52,15 +51,10 @@ class App extends React.Component {
   };
 
   login = async () => {
-    await fm.user
-      .login()
-      .then(account => {
-        this.getUserData();
-        this.setState({ account, isLoggedIn: true });
-      })
-      .catch(err => {
-        console.log('Error logging in with Fortmatic', err);
-      });
+    await fm.user.login().then(() => {
+      this.setState({ isLoggedIn: true });
+      this.getUserData();
+    });
   };
 
   logout = async () => {
@@ -79,8 +73,6 @@ class App extends React.Component {
           account: accounts[0],
           email: userData.email,
           balance,
-        }).catch(() => {
-          console.log('Error retrieving user data', err);
         });
       });
     });
@@ -96,9 +88,7 @@ class App extends React.Component {
           account={account}
           balance={balance}
           email={email}
-          logout={() => {
-            this.logout();
-          }}
+          logout={this.logout}
           web3={web3}
           ipfs={ipfs}
         />
