@@ -61,7 +61,6 @@ class Campaign extends React.Component {
     const { campaignDetails } = this.state;
 
     if (campaignDetails.currentState !== 1) {
-      console.log('state must be expired in order to receive funds');
       return;
     }
 
@@ -95,7 +94,7 @@ class Campaign extends React.Component {
       'ether',
     );
     campaignDetails.currentState = parseInt(campaignDetails.currentState, 10);
-    this.setState({ campaignDetails }, this.setState({ loading: false }));
+    this.setState({ campaignDetails, loading: false });
   };
 
   fundCampaign = () => {
@@ -129,7 +128,6 @@ class Campaign extends React.Component {
         const newCampaignDetails = { ...campaignDetails };
         newCampaignDetails.currentState = newState;
         newCampaignDetails.totalFunded = newTotal;
-        console.log('this is the new campaign details', newCampaignDetails);
 
         this.setState({ campaignDetails: newCampaignDetails });
       });
@@ -165,20 +163,13 @@ class Campaign extends React.Component {
             <>
               <div className={styles.info}>
                 {status}
-                {/* <div className={styles.item}>
-              State: {CAMPAIGN_STATE[campaignDetails.currentState]}
-            </div> */}
                 <div className={[styles.item, styles.title].join(' ')}>
                   {campaignDetails.campaignTitle}
                 </div>
-                {/* <div className={styles.item}>
-              Campaign Address: {campaignDetails.address}
-            </div> */}
                 <div className={[styles.item, styles.description].join(' ')}>
                   {campaignDetails.campaignDesc}
                 </div>
                 <div className={[styles.item, styles.grey].join(' ')}>
-                  {/* Creator Address: {campaignDetails.campaignStarter} */}
                   Created by:
                 </div>
                 <div className={[styles.item, styles.creator].join(' ')}>
@@ -186,7 +177,6 @@ class Campaign extends React.Component {
                 </div>
 
                 <div className={styles.item} style={{ marginBottom: '3%' }}>
-                  {/* Total Funds: {campaignDetails.totalFunded} */}
                   <span className={styles.title}>
                     {campaignDetails.totalFunded} Ethers
                   </span>
@@ -195,10 +185,6 @@ class Campaign extends React.Component {
                     of {campaignDetails.goalAmount} Ethers goal
                   </span>
                 </div>
-                {/* <div className={styles.item}>
-              Funding Goal: {campaignDetails.goalAmount}
-            </div> */}
-
                 <BorderLinearProgress
                   className={styles.progressBar}
                   variant="determinate"

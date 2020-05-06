@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link  } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Button from '@material-ui/core/Button';
@@ -71,7 +71,7 @@ const CustomButtonGroupAsArrows = ({ next, previous }) => {
   );
 };
 
-class Home extends React.Component {
+class Home extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -106,7 +106,6 @@ class Home extends React.Component {
       .returnAllCampaigns()
       .call()
       .then(async allCampaigns => {
-        console.log('these are all the campaigns being returned', allCampaigns);
         const promises = allCampaigns.map(async campaignAddress => {
           const campaignInst = new web3.eth.Contract(
             campaign.ABI,
@@ -155,7 +154,6 @@ class Home extends React.Component {
   };
 
   render() {
-
     return (
       <div>
         <div className={styles.top}>

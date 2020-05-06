@@ -11,6 +11,7 @@ class CreateCampaign extends React.Component {
         description: '',
         fundingGoal: '',
         selectedDeadline: new Date().setSeconds(0),
+        imgSrc: null,
       },
       buffer: '',
     };
@@ -34,6 +35,29 @@ class CreateCampaign extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.startCampaign();
+  };
+
+  convertToBuffer = async reader => {
+    // Convert file to a buffer to upload to IPFS
+    const buffer = await Buffer.from(reader.result);
+    this.setState({ buffer });
+  };
+
+  processFile = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const formData = this.state.formData;
+
+    formData.imgSrc = URL.createObjectURL(e.target.files[0]);
+    this.setState(
+      { formData },
+      console.log('this is the new state', this.state),
+    );
+
+    const file = e.target.files[0];
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onloadend = () => this.convertToBuffer(reader);
   };
 
   pushToIPFS = () => {
@@ -70,7 +94,6 @@ class CreateCampaign extends React.Component {
         from: account,
       })
       .then(res => {
-        console.log('this is the response object', res);
         const campaignInfo = res.events.CampaignCreated.returnValues; // event object
         campaignInfo.currentAmount = 0;
         campaignInfo.currentState = 0;
@@ -78,6 +101,16 @@ class CreateCampaign extends React.Component {
           campaign.ABI,
           res.events.CampaignCreated.returnValues.contractAddress,
         );
+
+        const resetForm = {
+          title: '',
+          description: '',
+          fundingGoal: '',
+          selectedDeadline: new Date().setSeconds(0),
+          imgSrc: null,
+        };
+
+        this.setState({ formData: resetForm, buffer: '' });
       });
   };
 
@@ -97,7 +130,7 @@ class CreateCampaign extends React.Component {
             data={formData}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
-            setBuffer={buffer => this.setState({ buffer })}
+            processFile={this.processFile}
             handleDateChange={this.handleDateChange}
           />
         </div>
