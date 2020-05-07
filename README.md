@@ -1,39 +1,41 @@
 <h1 align="center">Bridged - SJSU CMPE-195 Senior Project</h1>
 
 ## Project Description
-Bridged is a secure crowdfunding platform that integrates the benefits of blockchain technology to bring trust in crowdfunding. 
+
+Bridged is a crowdfunding platform that utilizes blockchain technology to build smart contracts between investors and campaigns to establish trust. It offers decentralized control over data, which will ensure data integrity all over the application.
 
 ## Prerequisites
 
 1. Node, ESLint, Prettier, and Ganache installed.
 2. In root directory, create a `.env.development` file and input your own Fortmatic key.
 
-*Note: In order to receive funds on Bridged for development purposes, you can send yourself Ether to your Fortmatic address from Metamask. If your wallet is empty on Metamask, there is a workaround by importing a Ganache address on Metamask.*
+_Note: In order to receive funds on Bridged for development purposes, you can send yourself Ether to your Fortmatic address from Metamask. If your wallet is empty on Metamask, there is a workaround by importing a Ganache address on Metamask._
 
 ## How to run the app in development mode
+
 1. In root directory, install dependencies by running `npm install`. Next, CD into the truffle folder and run `npm install` again.
-2. Start the client by running `npm run dev`.
-3. Go to `localhost:8080` in your browser.
-4. Run Ganache and create a workspace.
-5. CD into the truffle folder to deploy smart contracts by running `truffle migrate --network development`.
+2. Run Ganache and create a workspace.
+3. CD into the truffle folder to deploy smart contracts by running `truffle migrate --network development`.
+4. Start the client by running `npm run dev`.
+5. Go to `localhost:8080` in your browser.
 
 ## How the src repo is organized
 
 ### components Folder
 
-This is where components are defined for reuse. 
+Components defined for reuse.
 
 ### pages Folder
 
-This contains all pages/routes for the application which is a composite of components.
+Contains all pages/routes for the application which is a composite of components.
 
 ### images/svg Folder
 
-This contains any static assets. 
+Contains any static assets.
 
 ### truffle Folder
 
-This contains all functional logic for smart contracts the define our transactions.
+Contains all functional logic for smart contracts that define our transactions.
 
 ## Commit rules
 
